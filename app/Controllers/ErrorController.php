@@ -2,16 +2,16 @@
 
 namespace App\Controllers;
 
-use Rseon\Mallow\Controller;
+use Rseon\Mallow\Controllers\ErrorController as BaseErrorController;
 use Rseon\Mallow\Exceptions\ControllerException;
 
-class ErrorController extends Controller
+class ErrorController extends BaseErrorController
 {
     public function routeNotFound($url, $method)
     {
         header("HTTP/1.0 404 Not Found");
 
-        container('Debugbar')['exceptions']->addException(new ControllerException("Route not found for URL '$url' with method $method"));
+        registry('Debugbar')['exceptions']->addException(new ControllerException("Route not found for URL '$url' with method $method"));
         $this->view('errors.404');
         return $this;
     }

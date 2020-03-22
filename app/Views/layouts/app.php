@@ -19,7 +19,7 @@ include_view('layouts.partials.flash');
 
 <?php
 // Includes view
-$view = container('Controller')->getView();
+$view = registry('Controller')->getView();
 if($view) {
     include_view($view['path'], $view['args']);
 }

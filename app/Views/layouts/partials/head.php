@@ -1,6 +1,6 @@
 <?php
-if (getenv('APP_DEBUG') === 'true') {
-    echo container('Debugbar')->getJavascriptRenderer()->renderHead();
+if (getenv('APP_DEBUG')) {
+    echo registry('Debugbar')->getJavascriptRenderer()->renderHead();
 }
 
 foreach(config('locales') as $locale) {
