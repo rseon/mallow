@@ -5,7 +5,10 @@ return [
     /*
      * Available locales
      */
-    'locales' => ['en', 'fr'],
+    'locales' => [
+        'fr' => 'Français',
+        'en' => 'English',
+    ],
 
     /*
      * Default locale

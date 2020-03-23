@@ -4,18 +4,35 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="<?php echo get_csrf() ?>">
     <?php include_view('layouts.partials.head'); ?>
 </head>
 
 <body>
 
-<?php
-include_view('layouts.partials.flash');
-?>
 
-<ul>
-    <li><a href="<?php echo route('index') ?>"><?php echo __('Home') ?></a></li>
-</ul>
+<div class="container">
+    <ul>
+        <?php
+        // Lang switcher
+        foreach(config('locales') as $locale => $localeName) {
+            if($locale === get_locale()) {
+                continue;
+            }
+            echo '<li><a href="'.switch_locale($locale).'">'.$localeName.'</a></li>';
+        }
+        ?>
+    </ul>
+
+    <?php
+    include_view('layouts.partials.flash');
+    ?>
+
+    <ul>
+        <li><a href="<?php echo route('index') ?>"><?php echo __('Home') ?></a></li>
+        <li><a href="<?php echo route('index.test', ['id' => 4]) ?>"><?php echo __('Localized route') ?></a></li>
+    </ul>
+</div>
 
 <?php
 // Includes view

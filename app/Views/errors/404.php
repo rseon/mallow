@@ -1,1 +1,3 @@
-<h1>OW crap 404</h1>
+<div class="container">
+    <h1>Page not found 😢</h1>
+</div>
