@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="<?php echo get_csrf() ?>">
-    <?php include_view('layouts.partials.head'); ?>
+    <?php $this->partial('layouts.partials.head'); ?>
 </head>
 
 <body>
@@ -25,7 +25,7 @@
     </ul>
 
     <?php
-    include_view('layouts.partials.flash');
+    $this->partial('layouts.partials.flash');
     ?>
 
     <ul>
@@ -35,13 +35,9 @@
 </div>
 
 <?php
-// Includes view
-$view = registry('Controller')->getView();
-if($view) {
-    include_view($view['path'], $view['args']);
-}
+echo $this->content();
 
-include_view('layouts.partials.foot');
+$this->partial('layouts.partials.foot');
 ?>
 </body>
 </html>

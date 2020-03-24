@@ -19,7 +19,6 @@ class IndexController extends Controller
         $name = 'Mallow';
 
         $this->view('index', compact('name'));
-        return $this;
     }
 
     /**
@@ -38,7 +37,6 @@ class IndexController extends Controller
         }
 
         $this->view('test', compact('id'));
-        return $this;
     }
 
     /**

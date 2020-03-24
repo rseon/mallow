@@ -1,7 +1,7 @@
 <div class="container">
     <h1><?php echo __('Home') ?></h1>
 
-    <p><?php echo __('Hello, :name !', compact('name')) ?></p>
+    <p><?php echo __('Hello, :name !', ['name' => $this->name]) ?></p>
 
     <form action="<?php echo route('testform', [], 'POST') ?>" method="post">
         <?php echo csrf_input() ?>
