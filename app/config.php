@@ -4,10 +4,18 @@ return [
 
     /*
      * Available locales
+     *
+     * Actually the locales are defined by the subdomain.
+     * You can bypass it for the default locale.
      */
     'locales' => [
-        'fr' => 'Français',
-        'en' => 'English',
+        'en' => [
+            'name' => 'English',
+        ],
+        'fr' => [
+            'name' => 'Français',
+            'subdomain' => 'fr',
+        ],
     ],
 
     /*

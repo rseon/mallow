@@ -15,11 +15,11 @@
     <ul>
         <?php
         // Lang switcher
-        foreach(config('locales') as $locale => $localeName) {
+        foreach(config('locales') as $locale => $localeData) {
             if($locale === get_locale()) {
                 continue;
             }
-            echo '<li><a href="'.switch_locale($locale).'">'.$localeName.'</a></li>';
+            echo '<li><a href="'.get_current_url_locale($locale).'">'.$localeData['name'].'</a></li>';
         }
         ?>
     </ul>
@@ -29,8 +29,8 @@
     ?>
 
     <ul>
-        <li><a href="<?php echo route('index') ?>"><?php echo __('Home') ?></a></li>
-        <li><a href="<?php echo route('index.test', ['id' => 4]) ?>"><?php echo __('Localized route') ?></a></li>
+        <li><a href="<?php echo route('index') ?>" class="<?php if(get_current_route('name') === 'index') echo 'text-success' ?>"><?php echo __('Home') ?></a></li>
+        <li><a href="<?php echo route('index.test', ['id' => 4]) ?>" class="<?php if(get_current_route('name') === 'index.test') echo 'text-success' ?>"><?php echo __('Localized route') ?></a></li>
     </ul>
 </div>
 

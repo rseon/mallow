@@ -31,6 +31,12 @@ class IndexController extends Controller
      */
     public function test(int $id, array $request)
     {
+        if($this->isPost()) {
+            return $this->json([
+                'success' => 'Success from POST :)',
+            ]);
+        }
+
         $this->view('test', compact('id'));
         return $this;
     }
@@ -43,26 +49,24 @@ class IndexController extends Controller
      */
     public function testform(array $request)
     {
-        if($this->isPost()) {
-            $this->csrf(route('index'));
-            $post = sanitize_array($this->getPost());
+        $this->csrf(route('index'));
+        $post = sanitize_array($this->getPost());
 
-            $errors = [];
-            if(!isset($post['name']) || $post['name'] === '') {
-                $errors['name'] = 'Please fill name';
-            }
-            if(!isset($post['email']) || $post['email'] === '') {
-                $errors['email'] = 'Please fill email';
-            }
+        $errors = [];
+        if(!isset($post['name']) || $post['name'] === '') {
+            $errors['name'] =   'Please fill name';
+        }
+        if(!isset($post['email']) || $post['email'] === '') {
+            $errors['email'] = 'Please fill email';
+        }
 
-            if($errors) {
-                old($post);
-                flash()->error($errors);
-                redirect(route('index'));
-            }
-
-            flash()->success('Good job :)');
+        if($errors) {
+            old($post);
+            flash()->error($errors);
             redirect(route('index'));
         }
+
+        flash()->success('Good job :)');
+        redirect(route('index'));
     }
 }
