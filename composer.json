@@ -1,7 +1,9 @@
 {
     "name": "rseon/mallow",
     "description": "Test framework based on Mallow",
+    "homepage": "https://github.com/rseon/mallow",
     "require": {
+        "php": "^7.1",
         "rseon/mallow-core": "^1.3"
     },
     "autoload": {
