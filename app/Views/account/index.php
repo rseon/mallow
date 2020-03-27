@@ -1,0 +1,1 @@
+<h1><?php echo __('My account') ?></h1>

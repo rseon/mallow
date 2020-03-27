@@ -3,10 +3,10 @@
 return [
 
     /*
-     * Available locales
+     * Available locales.
      *
-     * Actually the locales are defined by the subdomain.
-     * You can bypass it for the default locale.
+     * The locale is defined by subdomain (ie 'fr.my-domain.dv').
+     * You can omit it for the default locale.
      */
     'locales' => [
         'en' => [
@@ -24,7 +24,7 @@ return [
     'locale' => 'en',
 
     /*
-     * Database
+     * Database credentials and config
      */
     'database' => [
         'host' => getenv('DB_HOST'),
@@ -42,12 +42,17 @@ return [
     'controllers' => 'App\\Controllers',
 
     /*
-     * Path to the lang files
+     * Namespace of models
      */
-    'langs_path' => '/resources/langs',
+    'models' => 'App\\Models',
+
+    /*
+     * Path to the view files
+     */
+    'views_path' => '/app/Views',
 
     /*
      * Path to the lang files
      */
-    'views_path' => '/app/Views',
+    'langs_path' => '/resources/langs',
 ];

@@ -1,5 +1,8 @@
 <?php
 
 return [
-    'index.test' => '/route-traduite-([0-9]+).html',
+    'account' => '/mon-compte',
+    'login' => '/connexion',
+    'logout' => '/deconnexion',
+    'register' => '/inscription',
 ];
