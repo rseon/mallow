@@ -1,6 +1,6 @@
 # Mallow - Another PHP framework
 
-This is the minimal installation to use [Mallow](https://github.com/rseon/mallow-core).
+Based on the [Mallow Core](https://github.com/rseon/mallow-core).
 
 Features included :
 - Localization : EN (default) and FR
@@ -37,12 +37,14 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 ## Minimal installation
 
-The following files are required to make the framework work. The others can be deleted.
+The following files are required to make the framework work.<br>
+The others are here for testing purpose and can be deleted.
 
 - `/app/Controller/IndexController.php` : your homepage (called by the `index` route)
+- `/app/Models` : folder required but files into it are optional
 - `/app/Views/layouts/app.php` : main layout
 - `/app/Views/index.php` : homepage
 - `/app/config.php` : app configuration
-- `/app/routes.php` : app configuration
+- `/app/routes.php` : routes
 - `/resources/langs` : folder required but files into it are optional
 - `/.env` : sensitive data (don't commit them !)
