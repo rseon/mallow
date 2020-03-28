@@ -10,7 +10,27 @@ Features included :
 
 ## Installation
 
-- `composer require rseon/mallow`
+### Via bash script
+
+You can [download this file](https://gist.github.com/rseon/3626492b32cf8c3290f2f868a94b94e3), upload it on your server
+and execute it.
+
+Or you can do this manually :
+
+- `wget -O mallow.zip https://github.com/rseon/mallow/archive/master.zip`
+- `unzip mallow.zip`
+- `mv mallow-master/ mallow`
+- `rm mallow.zip`
+- `cd mallow/`
+- `composer install`
+- `cp .env.example .env`
+- `chown -R www-data:www-data .`
+- `php vendor/rseon/mallow-core/src/bin/keygen`
+
+### Download it
+
+- Download this repository as zip or tar.gz
+- Upload and unzip/untar it on your server
 - Generate your `APP_KEY` running `php vendor/rseon/mallow-core/src/bin/keygen` and past it into the `.env` file
 
 **Note** : If the `.env` file was not created when installing this package, rename `.env.example` to `.env`
