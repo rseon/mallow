@@ -1,5 +1,6 @@
 {
     "name": "rseon/mallow",
+    "type": "project",
     "description": "Another PHP framework",
     "homepage": "https://github.com/rseon/mallow",
     "require": {
