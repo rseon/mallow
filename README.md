@@ -19,39 +19,11 @@
 
 ## Installation
 
-**Composer note** : the user and core files are in this repository so you can't install it via composer.
-Howevere [Composer](https://getcomposer.org/) is required for autoloading and installing dependencies. 
+Mallow utilizes [Composer](https://getcomposer.org/) to manage its dependencies.
+So, before using this framework, make sure you have Composer installed on your machine.
 
-
-### Automatic via bash script
-
-Run these commands on your server :
-
-```
-curl -O https://gist.githubusercontent.com/rseon/3626492b32cf8c3290f2f868a94b94e3/raw/546214d561223d4d1616bda78b55b35fc624321c/mallow-installer.sh
-chmod +x mallow-installer.sh
-./mallow-installer.sh
-```
-
-Or if you don't trust [the bash file](https://gist.githubusercontent.com/rseon/3626492b32cf8c3290f2f868a94b94e3)
-you can execute manually these commands on your server :
-
-```
-wget -O mallow.zip https://github.com/rseon/mallow/archive/master.zip
-unzip mallow.zip
-mv mallow-master/ mallow
-rm mallow.zip
-cd mallow
-composer install
-cp .env.example .env
-php src/bin/keygen
-```
-
-### Manually
-
-- [Download the project](https://github.com/rseon/mallow/archive/master.zip), upload the file on your server and unzip it
-- Run `composer install`
-- Copy `.env.example` to `.env`
+- Run `composer create-project rseon/mallow my-project`
+- Copy `.env.example` to `.env` (if `.env` file was not created)
 - Generate your `APP_KEY` running `php src/bin/keygen` and paste the result in your `.env` file 
 
 
