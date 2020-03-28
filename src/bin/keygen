@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+// @link https://github.com/gladchinda/keygen-php/blob/2.0.0-alpha/src/Keygen/Generators/TokenGenerator.php
+$length = 32;
+$tokenlength = round($length * 4 / 3);
+$token = '';
+for ($i = 0; $i < $tokenlength; ++$i) {
+    $token .= chr(rand(32,1024));
+}
+
+echo PHP_EOL.'Paste this APP_KEY into your .env file :'.PHP_EOL.PHP_EOL;
+echo base64_encode(str_shuffle($token)).PHP_EOL.PHP_EOL;

@@ -1,44 +1,29 @@
 # Mallow - Another PHP framework
 
-Based on the [Mallow Core](https://github.com/rseon/mallow-core).
+> A mix between old-school and standardized framework.
 
-Features included :
-- Localization : EN (default) and FR
-- Authentication and account part
-- Some tests
+## Features
+
+- MVC pattern
+- Localization (by section / with multiple files)
+- Router with localized routes and regex (be careful to sort them correctly !)
+- Database abstraction layer with PDO
+- Mini ORM (models are objects)
+- Authentication
+- Flash messages and input sessions
+- Registry to share data
+- Dotenv file for sensitive configuration (to not commit !)
+- CSRF protection
+- [Debugbar](https://github.com/maximebf/php-debugbar)
 
 
 ## Installation
 
-### Automatic via bash script
+Via [Composer](https://getcomposer.org/) : `composer require rseon/mallow`
 
-[Check the code](https://gist.github.com/rseon/3626492b32cf8c3290f2f868a94b94e3)
-```
-curl -O https://gist.githubusercontent.com/rseon/3626492b32cf8c3290f2f868a94b94e3/raw/f5b4f02ebdbc0775f4c4177e7f553539ffd5f830/mallow-installer.sh
-chmod +x mallow-installer.sh
-./mallow-installer.sh
-```
+After installation, generate your `APP_KEY` and paste it into the `.env` file running :
 
-Or you can do it manually :
-```
-wget -O mallow.zip https://github.com/rseon/mallow/archive/master.zip
-unzip mallow.zip
-mv mallow-master/ mallow
-rm mallow.zip
-cd mallow
-composer install
-cp .env.example .env
-chown -R www-data:www-data .
-php vendor/rseon/mallow-core/src/bin/keygen
-```
-
-### Download it
-
-- Download this repository as zip or tar.gz
-- Upload and unzip/untar it on your server
-- Generate your `APP_KEY` running `php vendor/rseon/mallow-core/src/bin/keygen` and paste it into the `.env` file
-
-**Note** : If the `.env` file was not created when installing this package, rename `.env.example` to `.env`
+`php src/bin/keygen` 
 
 
 ## Database
@@ -72,4 +57,5 @@ The others are here for testing purpose and can be deleted.
 - `/app/config.php` : app configuration
 - `/app/routes.php` : routes
 - `/resources/langs` : folder required but files into it are optional
+- `/src` : the core files
 - `/.env` : sensitive data (don't commit them !)

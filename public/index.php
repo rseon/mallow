@@ -3,7 +3,7 @@
 /*
  * This constant must be defined on your root path
  */
-define('ROOT_FRAMEWORK', realpath(dirname(__FILE__).'/../'));
+define('ROOT', realpath(dirname(__FILE__).'/../'));
 
 /*
  * Only to redirect "/index.php" to "/"
@@ -16,4 +16,4 @@ if ($_SERVER['REQUEST_URI'] === '/index.php') {
 /*
  * Call the Mallow Core
  */
-require_once(ROOT_FRAMEWORK.'/vendor/rseon/mallow-core/bootstrap.php');
+require_once(ROOT.'/bootstrap.php');
