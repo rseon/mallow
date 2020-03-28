@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 'On');
+
 if(!defined('ROOT')) {
     throw new RuntimeException('Constant ROOT must be defined');
 }
@@ -9,6 +12,12 @@ require ROOT . '/vendor/autoload.php';
 
 // Load env
 Rseon\Mallow\Dotenv::load(ROOT);
+
+// Check debug
+if(!getenv('APP_DEBUG')) {
+    error_reporting(0);
+    ini_set('display_errors', 'Off');
+}
 
 // Check APP_KEY
 if(!getenv('APP_KEY')) {
