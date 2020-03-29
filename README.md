@@ -26,6 +26,16 @@ So, before using this framework, make sure you have Composer installed on your m
 - Copy `.env.example` to `.env` (if `.env` file was not created)
 - Generate your `APP_KEY` running `php src/bin/keygen` and paste the result in your `.env` file 
 
+### Front-end
+
+To manage assets in `/resources/assets` Mallow uses the awesome [Laravel Mix](https://laravel-mix.com/) which is
+an excellent Webpack wrapper.
+
+After installation run `npm install && npm run dev`
+
+The framework includes [jQuery](https://jquery.com/), [Bootstrap](https://getbootstrap.com/) and
+[FontAwesome](https://fontawesome.com/).
+
 
 ## Database
 
