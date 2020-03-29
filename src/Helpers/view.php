@@ -2,7 +2,12 @@
 
 if(!function_exists('asset')) {
 
-
+    /**
+     * Returns asset path with its version if defined in the public/mix-manifest.json
+     *
+     * @param string $path
+     * @return string
+     */
     function asset(string $path)
     {
         $manifest = get_path('/public/mix-manifest.json');
