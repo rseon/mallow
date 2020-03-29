@@ -1,4 +1,9 @@
 .idea
+node_modules
+/public/*
+!/public/vendor
+!/public/.htaccess
 /vendor
 .env
 composer.lock
+package-lock.json
