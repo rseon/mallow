@@ -1,6 +1,6 @@
-<script src="<?php echo url('/js/manifest.js') ?>"></script>
-<script src="<?php echo url('/js/vendor.js') ?>"></script>
-<script src="<?php echo url('/js/app.js') ?>"></script>
+<script src="<?php echo asset('/js/manifest.js') ?>"></script>
+<script src="<?php echo asset('/js/vendor.js') ?>"></script>
+<script src="<?php echo asset('/js/app.js') ?>"></script>
 
 <?php
 if (getenv('APP_DEBUG')) {

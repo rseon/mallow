@@ -115,6 +115,7 @@ if (!function_exists('url')) {
      *
      * @param string $path
      * @return string
+     * @throws \Rseon\Mallow\Exceptions\AppException
      */
     function url(string $path)
     {
