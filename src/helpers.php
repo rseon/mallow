@@ -4,6 +4,21 @@
  * Define some helpers functions
  */
 
+if (!function_exists('check_hash')) {
+
+    /**
+     * Check a hash is correct
+     *
+     * @param $value
+     * @param $hash
+     * @return bool
+     */
+    function check_hash($value, $hash)
+    {
+        return password_verify($value.getenv('APP_KEY'), $hash);
+    }
+}
+
 if (!function_exists('config')) {
 
     /**
@@ -56,22 +71,6 @@ if (!function_exists('make_hash')) {
         return password_hash($value.getenv('APP_KEY'), PASSWORD_DEFAULT);
     }
 }
-
-if (!function_exists('check_hash')) {
-
-    /**
-     * Check a hash is correct
-     *
-     * @param $value
-     * @param $hash
-     * @return bool
-     */
-    function check_hash($value, $hash)
-    {
-        return password_verify($value.getenv('APP_KEY'), $hash);
-    }
-}
-
 
 if (!function_exists('registry')) {
     /**

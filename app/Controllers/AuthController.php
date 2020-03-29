@@ -40,10 +40,10 @@ class AuthController extends Controller
     public function login(array $request)
     {
         // Check login
-        if($this->isPost()) {
+        if(is_post()) {
             $this->csrf(route('login'));
 
-            $post = sanitize_array($this->getPost());
+            $post = sanitize_array($_POST);
             $errors = [];
             if(!isset($post['email']) || $post['email'] === '') {
                 $errors['email'] = 'Please fill in your email';
@@ -106,10 +106,10 @@ class AuthController extends Controller
     public function register(array $request)
     {
         // Check login
-        if($this->isPost()) {
+        if(is_post()) {
             $this->csrf(route('register'));
 
-            $post = sanitize_array($this->getPost());
+            $post = sanitize_array($_POST);
             $errors = [];
             if(!isset($post['name']) || $post['name'] === '') {
                 $errors['name'] = 'Please fill in your name';

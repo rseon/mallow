@@ -47,6 +47,13 @@ abstract class Controller
      */
     public function run()
     {
+        if(is_xhr()) {
+            if(!array_key_exists('Content-Type', headers_list())) {
+                header('Content-Type: application/json');
+            }
+            return;
+        }
+
         if($this->view === false) {
             return;
         }
@@ -132,26 +139,6 @@ abstract class Controller
     }
 
     /**
-     * Get if request method is POST
-     *
-     * @return bool
-     */
-    public function isPost()
-    {
-        return $_SERVER['REQUEST_METHOD'] === 'POST';
-    }
-
-    /**
-     * Get POST data
-     *
-     * @return mixed
-     */
-    public function getPost()
-    {
-        return $_POST;
-    }
-
-    /**
      * Set the page title
      *
      * @param string $title
@@ -182,17 +169,5 @@ abstract class Controller
         }
 
         unset($data[$tokenName]);
-    }
-
-    /**
-     * Send a JSON response
-     *
-     * @param null $data
-     */
-    public function json($data = null)
-    {
-        header('Content-Type: application/json');
-        echo json_encode($data);
-        exit;
     }
 }

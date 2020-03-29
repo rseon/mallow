@@ -31,3 +31,10 @@ Router::get('closure', '/closure-([0-9]+).html', function(int $id, array $reques
     $controller->run();
 }, ['id']);
 
+// Test XHR
+Router::get('ajax', '/ajax', function(array $request = []) {
+    if(is_xhr()) {
+        json($request);
+    }
+    dump($request);
+});
