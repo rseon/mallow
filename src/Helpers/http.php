@@ -1,5 +1,18 @@
 <?php
 
+if (!function_exists('get_xhr_token')) {
+
+    /**
+     * Returns token sent during XHR
+     *
+     * @return bool
+     */
+    function get_xhr_token()
+    {
+        return $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
+    }
+}
+
 if (!function_exists('is_post')) {
 
     /**

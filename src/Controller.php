@@ -154,20 +154,18 @@ abstract class Controller
      * @param string $redirect
      * @param null $data
      */
-    public function csrf(string $redirect, &$data = null)
+    public function csrf(string $redirect, $data = null)
     {
         if(is_null($data)) {
-            $data = &$_POST;
+            $data = $_POST;
         }
 
-        $tokenName = csrf()->getTokenName();
-        $check = csrf()->check($data[$tokenName] ?? null);
-        if(!$check) {
+        if(!check_csrf_array($data)) {
             old($data);
             flash()->warning('Incorrect CSRF token');
             redirect($redirect);
         }
 
-        unset($data[$tokenName]);
+        csrf()->resetToken();
     }
 }

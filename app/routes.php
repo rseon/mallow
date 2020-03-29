@@ -32,9 +32,14 @@ Router::get('closure', '/closure-([0-9]+).html', function(int $id, array $reques
 }, ['id']);
 
 // Test XHR
-Router::get('ajax', '/ajax', function(array $request = []) {
+Router::post('ajax', '/ajax', function(array $request = []) {
+    $response = [
+        'csrf' => get_xhr_token(),
+        'correct' => check_csrf(get_xhr_token()),
+        'request' => $request,
+    ];
     if(is_xhr()) {
-        json($request);
+        json($response);
     }
-    dump($request);
+    dump($response);
 });

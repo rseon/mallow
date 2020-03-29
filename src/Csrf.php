@@ -19,18 +19,12 @@ class Csrf
     }
 
     /**
-     * Get current token.
-     * Generate it if inexistant.
+     * Get current token
      *
-     * @return string
-     * @throws AppException
+     * @return mixed
      */
     public function getToken()
     {
-        if(!$this->token) {
-            $this->token = $this->generate();
-            $_SESSION[static::NAME] = $this->token;
-        }
         return $this->token;
     }
 
@@ -49,13 +43,55 @@ class Csrf
      *
      * @param $data
      * @return bool
+     * @throws AppException
      */
     public function check($data)
     {
-        if(!isset($_SESSION[static::NAME]) || !$_SESSION[static::NAME]) {
-            return false;
+        return $this->hasTokenSession() && $data === $_SESSION[static::NAME];
+    }
+
+    /**
+     * Reset the token
+     *
+     * @throws AppException
+     */
+    public function resetToken()
+    {
+        $this->token = $this->generate();
+        $_SESSION[static::NAME] = $this->token;
+    }
+
+    /**
+     * Csrf constructor.
+     */
+    protected function __construct()
+    {
+        $this->token = $this->getTokenSession();
+    }
+
+    /**
+     * Get if token exists
+     *
+     * @return bool
+     */
+    protected function hasTokenSession()
+    {
+        return isset($_SESSION[static::NAME]) && $_SESSION[static::NAME];
+    }
+
+    /**
+     * Get token in session.
+     * Generate it if inexistant
+     *
+     * @return mixed
+     * @throws AppException
+     */
+    protected function getTokenSession()
+    {
+        if(!$this->hasTokenSession()) {
+            $this->resetToken();
         }
-        return $data === $_SESSION[static::NAME];
+        return $_SESSION[static::NAME];
     }
 
     /**
