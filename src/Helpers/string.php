@@ -52,6 +52,52 @@ if (!function_exists('normalize_string')) {
     }
 }
 
+if (!function_exists('normalize_string_reverse')) {
+
+    /**
+     * Reverse a transformed unified string.
+     *
+     * @example : 'my-action' => 'myAction'
+     * @example : 'folder_my-name' => 'Folder\MyName'
+     *
+     * @param string $string
+     * @return false|string|string[]
+     * @throws \Rseon\Mallow\Exceptions\AppException
+     */
+    function normalize_string_reverse(string $string, string $type = 'controller')
+    {
+        $unNormalize = function($string) {
+            $actionParts = explode('-', $string);
+            return implode('', array_map(function($key, $value) {
+                $value = strtolower($value);
+                if($key > 0) {
+                    $value = ucfirst($value);
+                }
+                return $value;
+            }, array_keys($actionParts), array_values($actionParts)));
+        };
+
+        if($type === 'action') {
+            return $unNormalize($string);
+        }
+
+        if(strpos($string, '_') !== false) {
+            $folderParts = explode('_', $string);
+            foreach($folderParts as $k => $p) {
+                $normalized = $unNormalize($p);
+                $normalized = ucfirst($normalized);
+                $folderParts[$k] = $normalized;
+            }
+            $string = implode('\\', $folderParts);
+        }
+        else {
+            $string = ucfirst($unNormalize($string));
+        }
+
+        return $string;
+    }
+}
+
 if (!function_exists('sanitize')) {
 
     /**
