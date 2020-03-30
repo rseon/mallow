@@ -4,9 +4,11 @@ namespace App\Controllers\Admin;
 
 use App\Models\Admin\User;
 use Rseon\Mallow\Controller;
+use App\Traits\Admin\AdminUtils;
 
 abstract class AbstractAdminController extends Controller
 {
+    use AdminUtils;
 
     /**
      * Path to the admin URL
@@ -25,7 +27,7 @@ abstract class AbstractAdminController extends Controller
     {
         $this->user = new User;
 
-        $this->layout('layouts.admin.admin', [
+        $this->layout('layouts.admin', [
             'user' => $this->user,
         ]);
         $this->setTitle("Administration");
@@ -41,5 +43,17 @@ abstract class AbstractAdminController extends Controller
     public function view(string $path, array $args = [])
     {
         return parent::view("admin.$path", $args);
+    }
+
+    /**
+     * Add path to the layout
+     *
+     * @param string $layout
+     * @param array $args
+     * @return \Rseon\Mallow\View
+     */
+    public function layout(string $layout, array $args = [])
+    {
+        return parent::layout("admin.$layout", $args);
     }
 }

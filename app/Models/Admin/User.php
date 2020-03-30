@@ -16,7 +16,7 @@ class User extends Model
     use Authenticable;
 
     const AUTH_SESSION_NAME = 'admin';
-    const AUTH_IDENTIFIER = 'username';
+    const AUTH_IDENTIFIER = 'email';
 
     /**
      * Table name in database

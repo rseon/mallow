@@ -5,12 +5,12 @@ namespace App\Controllers\Admin;
 class IndexController extends AbstractAdminController
 {
     /**
-     * Index page
-     *
-     * @return $this
+     * @throws \Rseon\Mallow\Exceptions\AppException
      */
     public function index()
     {
+        $this->breadcrumbs();
+        $this->setHeader('Tableau de bord', 'Where all starts...');
         $this->view('index');
     }
 }

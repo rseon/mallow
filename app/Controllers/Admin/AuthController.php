@@ -19,10 +19,10 @@ class AuthController extends AbstractAdminController
             $post = sanitize_array($_POST);
             $errors = [];
             if(!isset($post['username']) || $post['username'] === '') {
-                $errors['username'] = 'Please fill in your username';
+                $errors['username'] = 'Merci de renseigner votre identifiant';
             }
             if(!isset($post['password']) || $post['password'] === '') {
-                $errors['password'] = 'Please fill in your password';
+                $errors['password'] = 'Merci de renseigner votre mot de passe';
             }
 
             if($errors) {
@@ -36,10 +36,10 @@ class AuthController extends AbstractAdminController
                 $reason = $this->user->getReason();
                 switch($reason) {
                     case 'not_found':
-                        $errors[] = 'User not found';
+                        $errors[] = 'Utilisateur non trouvé';
                         break;
                     case 'bad_password':
-                        $errors[] = 'Bad password';
+                        $errors[] = 'Mot de passe incorrect';
                         break;
                 }
 
@@ -52,7 +52,7 @@ class AuthController extends AbstractAdminController
             redirect(admin_url('/index/index'));
         }
 
-        $this->layout('layouts.admin.auth');
+        $this->layout('layouts.auth');
         $this->view('auth.login');
     }
 
