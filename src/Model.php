@@ -6,7 +6,7 @@ use Rseon\Mallow\Exceptions\ModelException;
 use Rseon\Mallow\Exceptions\DatabaseException;
 
 /**
- * @method array getAll($conditions = [], $order = [], $limit = null, $only_fields = '*')
+ * @method array getAll($conditions = [], $sort = [], $limit = null, $only_fields = '*')
  * @method array getRow($conditions = [], $only_fields = null)
  * @method array getValue($fieldname, $conditions = [])
  * @method array fetchAll($sql, $datas = [])
@@ -36,40 +36,49 @@ abstract class Model
     /**
      * Find a model by its id
      *
-     * @param $id
+     * @param int|array $primary
      * @return static
      */
-    public static function find($id)
+    public static function find($primary)
     {
-        return static::execFind(new static, $id);
+        return static::execFind(new static, $primary);
     }
 
     /**
      * Find a model by its id or returns exception if not found
      *
-     * @param $id
+     * @param $primary
      * @return static
      * @throws ModelException
      */
-    public static function findOrFail($id)
+    public static function findOrFail($primary)
     {
-        $self = static::find($id);
+        $self = static::find($primary);
         if(!$self->found()) {
             $class = static::class;
-            throw new ModelException("Model {$class} with id {$id} not found.");
+            $message = "Model {$class}";
+            if(!is_array($primary)) {
+                $message .= " with primary {$primary}";
+            }
+            $message .= " not found.";
+            throw new ModelException($message);
         }
         return $self;
     }
 
     /**
+     * Retrieve all models
+     *
      * @param array $conditions
-     * @param array $order
+     * @param array $sort
      * @param null $limit
      * @param string $only_fields
+     * @return static
+     * @throws \Exception
      */
-    public static function all(array $conditions = [], array $order = [], $limit = null, $only_fields = '*')
+    public static function all(array $conditions = [], array $sort = [], $limit = null, $only_fields = '*')
     {
-        return static::model((new static)->getAll($conditions, $order, $limit, $only_fields));
+        return static::model((new static)->getAll($conditions, $sort, $limit, $only_fields));
     }
 
 
@@ -112,6 +121,7 @@ abstract class Model
     /**
      * Model constructor.
      * @param null $id
+     * @throws Exceptions\AppException
      */
     public function __construct($id = null)
     {
@@ -225,17 +235,6 @@ abstract class Model
     public function __get($name)
     {
         return $this->getAttribute($name);
-    }
-
-    /**
-     * Get called method
-     *
-     * @param string $method
-     * @return string
-     */
-    protected function getMethod(string $method)
-    {
-        return static::class.'::'.$method;
     }
 
     /**
@@ -466,20 +465,31 @@ abstract class Model
     }
 
     /**
+     * Get called method
+     *
+     * @param string $method
+     * @return string
+     */
+    protected function getMethod(string $method)
+    {
+        return static::class.'::'.$method;
+    }
+
+    /**
      * Find a model
      *
      * @param $instance
-     * @param $id
+     * @param array|int $primary
      * @return mixed
      */
-    protected static function execFind($instance, $id)
+    protected static function execFind($instance, $primary)
     {
-        if(is_array($id)) {
-            $condition = $id;
+        if(is_array($primary)) {
+            $condition = $primary;
         }
         else {
             $condition = [
-                $instance->primary => $id
+                $instance->primary => $primary
             ];
         }
         $data = $instance->getRow($condition);

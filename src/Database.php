@@ -108,12 +108,12 @@ class Database
 
 
     /**
-     * Returns the rows of the $table corresponding to the $conditions, ordered by $order and if needed only the $limit rows.
+     * Returns the rows of the $table corresponding to the $conditions, ordered by $sort and if needed only the $limit rows.
      * You can get $only_fields.
      *
      * @param string $table
      * @param array $conditions
-     * @param array $order
+     * @param array $sort
      * @param array|int $limit
      * @param array|string $only_fields
      *
@@ -143,7 +143,7 @@ class Database
      *      $this->getAll('my_table', [], [], null, ['active', 'id_user' => 'user']) // SELECT active, id_user as user
      *
      */
-    public function getAll(string $table, array $conditions = [], array $order = [], $limit = null, $only_fields = '*')
+    public function getAll(string $table, array $conditions = [], array $sort = [], $limit = null, $only_fields = '*')
     {
         $_fields = '*';
         if (!empty($only_fields)) {
@@ -167,14 +167,14 @@ class Database
         $sql = "SELECT {$_fields} FROM `{$table}`";
         $sql .= static::createWhere($conditions);
 
-        if ($order) {
+        if ($sort) {
             $_order = implode(', ', array_map(function ($v) {
                 if (strpos($v, ' ') !== false) {
                     list($a, $b) = explode(' ', $v);
                     return "`{$a}` {$b}";
                 }
                 return "`{$v}`";
-            }, $order));
+            }, $sort));
             $sql .= " ORDER BY {$_order}";
         }
 
@@ -243,14 +243,14 @@ class Database
 
 
     /**
-     * Get the value of field $fieldname (false if unknown).
-     * If $fieldname is an array, returns an array of the values.
+     * Get the value of field $column (false if unknown).
+     * If $column is an array, returns an array of the values.
      *
      * @example $this->getValue('my_table', 'active', ['id_user' => 1]); // => string "1"
      * @example $this->getValue('my_table', ['id_user','active'], ['id_user' => 1]); // => array ['id_user' => 1, 'active' => 1];
      *
      * @param string $table
-     * @param string|array $fieldname
+     * @param string|array $column
      * @param array $conditions
      *
      * @return array|bool|mixed
@@ -258,16 +258,16 @@ class Database
      *
      * @see Database::getRow()
      */
-    public function getValue(string $table, $fieldname, array $conditions = [])
+    public function getValue(string $table, $column, array $conditions = [])
     {
-        $res = $this->getRow($table, $conditions, $fieldname);
+        $res = $this->getRow($table, $conditions, $column);
         if (!$res) {
             return null;
         }
 
-        if (is_array($fieldname)) {
+        if (is_array($column)) {
             $returns = [];
-            foreach ($fieldname as $f) {
+            foreach ($column as $f) {
                 if (isset($res[$f])) {
                     $returns[$f] = $res[$f];
                 } else {
@@ -278,8 +278,8 @@ class Database
             return $returns;
         }
 
-        if (isset($res[$fieldname])) {
-            return $res[$fieldname];
+        if (isset($res[$column])) {
+            return $res[$column];
         }
 
         return null;
