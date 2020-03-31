@@ -10,7 +10,7 @@ use Rseon\Mallow\Router;
 /*
  * Get URI path
  */
-$module_path = \App\Controllers\Admin\AbstractAdminController::PATH_ADMIN;
+$module_path = config('path_admin');
 
 /*
  * Get module namespace

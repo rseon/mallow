@@ -55,4 +55,6 @@ return [
      * Path to the lang files
      */
     'langs_path' => '/resources/langs',
+
+    'path_admin' => getenv('PATH_ADMIN'),
 ];

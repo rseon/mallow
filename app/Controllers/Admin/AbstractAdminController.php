@@ -11,11 +11,6 @@ abstract class AbstractAdminController extends Controller
     use AdminUtils;
 
     /**
-     * Path to the admin URL
-     */
-    const PATH_ADMIN = '/admin123';
-
-    /**
      * @var User
      */
     protected $user;

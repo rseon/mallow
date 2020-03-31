@@ -9,6 +9,6 @@ if(!function_exists('admin_url')) {
      */
     function admin_url(string $path)
     {
-        return url(\App\Controllers\Admin\AbstractAdminController::PATH_ADMIN.$path);
+        return url(config('path_admin').$path);
     }
 }
