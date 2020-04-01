@@ -334,7 +334,8 @@ class Router
      *
      * @param array $route
      * @param array $params
-     * @return mixed|string|string[]|null
+     * @return string
+     * @throws Exceptions\AppException
      * @throws RouterException
      */
     public function getUrl(array $route, $params = [])

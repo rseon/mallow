@@ -1,5 +1,7 @@
 # Router
 
+> TODO : default router
+
 - **[Creating routes](/router?id=creating-routes)**
 - **[Available methods](/router?id=available-methods)**
     - [Definition](/router?id=definition)
@@ -14,8 +16,7 @@
 ## Creating routes
 
 The routes must be defined in the [app/routes.php](https://github.com/rseon/mallow/blob/master/app/routes.php) file.
-You are free to organize it as you want but keep in mind the file must create routes with the `Rseon\Mallow\Router`
-and must return this instance.
+You are free to organize it as you want.
 
 All the routes defined will be processed in the `public` directory by the
 [index.php](https://github.com/rseon/mallow/blob/master/public/index.php) (according to the
@@ -28,24 +29,27 @@ router will get it and returns the callback defined by the route.
 The following methods are handled as HTTP methods.
 
 ```php
-$Router->get(string $name, string $path, string|closure $callback, array $request = []);
-$Router->post(string $name, string $path, string|closure $callback, array $request = []);
-$Router->map(array $methods, string $name, string $path, string|closure $callback, array $request = []);
+use Rseon\Mallow\Router;
+Router::get(string $name, string $path, string|closure $callback, array $request = []);
+Router::post(string $name, string $path, string|closure $callback, array $request = []);
+Router::map(array $methods, string $name, string $path, string|closure $callback, array $request = []);
 ```
 
 ?> If a route is defined with `get`, only GET request will match this route (not POST).
 
 ?> **Tip** : To allow multiple HTTP methods, you can use the `map` method, setting the parameter `$methods` with array of allowed HTTP methods.
 
+?> Only GET and POST methods are implemented but not the other like PUT, PATCH, DELETE, OPTION or HEAD
+
 
 ### Definition
 
+- `$methods` : only for the `$map` method to set the allowed HTTP methods 
 - `$name` : you could request a route with it using the `route()` helper.<br>
 The name must be unique by method (get or post).
 - `$path` : the uri which match the route
 - `$callback` : can be a string (controller and action to process) or directly a closure
 - `$request` : required if `$path` is a regex, it will be the name of each part
-- `$methods` : only for the `$map` method to set the allowed HTTP methods 
 
 
 ## Regex
@@ -59,7 +63,7 @@ not `/my-route.html`.
 !> Be careful with the order of your routes when you have regex, the first found which match will be handled.
 
 ```php
-$Router->get($name, '/(.*)/(.*)-([0-9]+).html', $callback, ['country', 'slug', 'id']);
+Router::get($name, '/(.*)/(.*)-([0-9]+).html', $callback, ['country', 'slug', 'id']);
 ```
 In this example, there are 3 parameters mapped :
 - First `(.*)` is the country,
@@ -92,7 +96,7 @@ Otherwise, you can use a specific controller to use callback like the controller
 
 Example : 
 ```php
-$Router->get('closure', '/closure-([0-9]+).html', function(int $id, array $request = []) {
+Router::get('closure', '/closure-([0-9]+).html', function(int $id, array $request = []) {
     $controller = new Rseon\Mallow\Controllers\ClosureController();
     $controller->view('index', [
         'id' => $id,
@@ -107,7 +111,7 @@ $Router->get('closure', '/closure-([0-9]+).html', function(int $id, array $reque
 
 - `app/routes.php`
 ```php
-$Router->get('dynamic.test', '/(.*)/(.*)-([0-9]+).html', 'IndexController@listCountry', ['country', 'slug', 'id']);
+Router::get('dynamic.test', '/(.*)/(.*)-([0-9]+).html', 'IndexController@listCountry', ['country', 'slug', 'id']);
 ```
 
 - Anywhere to call the route
@@ -120,7 +124,7 @@ $route = route('dynamic.test', [
 ]);
 ```
 
-- URL generated : `/france/ma-boutique-22.html?sort=asc`
+- Generated URL : `/france/ma-boutique-22.html?sort=asc`
 
 - `app/Controllers/IndexController.php`
 ```php
@@ -141,13 +145,19 @@ Thanks to the helper `router()` you can retrieve the main `Rseon\Mallow\Router` 
 
 ```php
 // Add new route
-$Router->add(string $method, string $name, string $path, $callback, array $request = []) : Rseon\Mallow\Router
+$Router->addRoute(string $method, string $name, string $path, $callback, array $request = []) : Rseon\Mallow\Router
 
 // Add new route as an array
-$Router->addArray(array $data) : Rseon\Mallow\Router
+$Router->addRouteArray(array $data) : Rseon\Mallow\Router
 
 // New GET route
-$Router->get(string $name, string $path, $callback, array $request = []) : Rseon\Mallow\Router
+$Router->addRouteGet(string $name, string $path, $callback, array $request = []) : Rseon\Mallow\Router
+
+// New GET/POST route
+$Router->addRouteMap(array $methods, string $name, string $path, $callback, array $request = []) : Rseon\Mallow\Router
+
+// New POST route
+$Router->addRoutePost(string $name, string $path, $callback, array $request = []) : Rseon\Mallow\Router
 
 // Returns the current route from URL
 $Router->getCurrentRoute(string $current_url = null) : array
@@ -161,17 +171,11 @@ $Router->getRoutes(string $method = null) : array
 // Get the url of a route based on its parameters
 $Router->getUrl(array $route, $params = []) : string
 
-// New GET/POST route
-$Router->map(array $methods, string $name, string $path, $callback, array $request = []) : Rseon\Mallow\Router
-
-// New POST route
-$Router->post(string $name, string $path, $callback, array $request = []) : Rseon\Mallow\Router
-
 // Performs a redirection
 $Router->redirect(string $url) : void
 
 // Remove a route
-$Router->remove(string $method, string $name) : Rseon\Mallow\Router
+$Router->removeRoute(string $method, string $name) : Rseon\Mallow\Router
 
 // Get the route URL by name and parameters
 $Router->routeTo(string $name, array $params = [], string $method = null) : string

@@ -1,8 +1,13 @@
 # Controllers
 
+> TODO : request
+
 - **[Introduction](/controllers?id=introduction)**
 - **[Defining controllers](/controllers?id=defining-controllers)**
 - **[Single Action Controllers](/controllers?id=single-action-controllers)**
+- **[Specific controllers](/controllers?id=specific-controllers)**
+    - [ErrorController](/controllers?id=errorcontroller)
+    - [ClosureController](/controllers?id=closurecontroller)
 - **[Useful methods](/controllers?id=useful-methods)**
 
 
@@ -42,7 +47,7 @@ class UserController extends Controller
 You can define a route to this controller action like so :
 
 ```php
-$Router->get('user.profile', '/user/([0-9]+)', 'UserController@show', ['id']);
+Router::get('user.profile', '/user/([0-9]+)', 'UserController@show', ['id']);
 ```
 
 Now, when a request matches the specified route URI, the `show` method on the `UserController` class will be executed.
@@ -80,7 +85,36 @@ class UserController extends Controller
 When registering routes for single action controllers, you do not need to specify a method :
 
 ```php
-$Router->get('user.profile', '/user/([0-9]+)', 'UserController', ['id']);
+Router::get('user.profile', '/user/([0-9]+)', 'UserController', ['id']);
+```
+
+## Specific controllers
+
+There are two specific controllers you can extend in your app.
+
+
+### ErrorController
+
+This controller (and more specifically the `routeNotFound` method) is called when you try to access an inexistant route.
+The default controller launch an exception with a 404 header, but you can find an override on
+[app/Controllers/ErrorController.php](https://github.com/rseon/mallow/blob/master/app/Controllers/ErrorController.php)
+which display a view.
+
+
+### ClosureController
+
+This controller is useful when you want to use a closure in your route, keeping advantages of controllers :
+
+```php
+Router::get('test.closure', '/closure-([0-9]+).html', function(int $id, array $request = []) {
+    $controller = new Rseon\Mallow\Controllers\ClosureController();
+    $controller->view('index', [
+        'name' => 'from Closure :)',
+        'id' => $id,
+        'request' => $request,
+    ]);
+    $controller->run();
+}, ['id']);
 ```
 
 
@@ -95,23 +129,17 @@ $this->csrf(string $redirect, &$data = null) : void
 // Disable the layout
 $this->disableLayout() : void
 
+// Disable the view (and the layout)
+$this->disableView() : void
+
 // Returns the current action
 $this->getAction() : string
 
 // Returns the layout
 $this->getLayout() : Rseon\Mallow\View
 
-// Returns the raw POST
-$this->getPost() : array
-
 // Returns the view
 $this->getView() : Rseon\Mallow\View
-
-// Get if request method is POST
-$this->isPost() : bool
-
-// Make a JSON response
-$this->json($data = null) : bool
 
 // Define the layout to use
 $this->layout(string $layout, array $args = []) : Rseon\Mallow\View

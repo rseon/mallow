@@ -14,7 +14,9 @@ abstract class Controller
 
     /**
      * Controller constructor.
-     * @param string $action
+     *
+     * @param string|null $action
+     * @param array $request
      * @throws Exceptions\AppException
      */
     public function __construct(string $action = null, array $request = [])
@@ -25,7 +27,6 @@ abstract class Controller
         if($action) {
             $this->action = normalize_string($action);
         }
-
 
         if(method_exists($this, 'init')) {
             $this->init();

@@ -20,7 +20,7 @@ Mallow utilizes [Composer](https://getcomposer.org/) to manage its dependencies.
 So, before using Mallow, make sure you have Composer installed on your machine.
 
 Then simply run<br>
-`composer require rseon/mallow`
+`composer create-project rseon/mallow my-project`
 
 
 ## Public directory
@@ -42,6 +42,6 @@ If you have not renamed the `.env.example` file to `.env`, you should do that no
 ### Generate application key
 
 To generate the key you can run the following command : <br>
-`php vendor/rseon/mallow-core/src/bin/keygen`
+`php src/bin/keygen`
 
 Paste the result in `APP_KEY` of the `.env` file.

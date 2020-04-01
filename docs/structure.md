@@ -4,6 +4,7 @@
     - [App directory](/structure?id=app-directory)
     - [Public directory](/structure?id=public-directory)
     - [Resources directory](/structure?id=resources-directory)
+    - [Src directory](/structure?id=src-directory)
     - [Vendor directory](/structure?id=vendor-directory)
 - **[The App directory](/structure?id=the-app-directory)**
     - [Controllers](/structure?id=controllers)
@@ -32,10 +33,16 @@ This directory also houses your assets such as images, JavaScript, and CSS.
 The `resources` directory contains all of your language files. You can set un-compiled assets such as SASS or JavaScript.
 
 
+### Src directory
+
+The `src` directory contains the core files of the framework.
+**These files should not be changed**.
+
+
 ### Vendor directory
 
 The `vendor` directory contains your [Composer](https://getcomposer.org/) dependencies,
-like the [Mallow Core](https://github.com/rseon/mallow-core)
+like the [Debugbar](https://github.com/maximebf/php-debugbar)
 
 
 

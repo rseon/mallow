@@ -8,7 +8,7 @@
 
 <body>
 <div class="container">
-    <?php $this->partial('layouts.partials.flash'); ?>
+    <?php $this->partial('layouts.components.flash'); ?>
 
     <h1><?php echo __('Hello, :name !', ['name' => $this->user['name']]) ?></h1>
     <p>

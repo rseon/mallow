@@ -5,17 +5,6 @@ namespace Rseon\Mallow;
 use Rseon\Mallow\Exceptions\ModelException;
 use Rseon\Mallow\Exceptions\DatabaseException;
 
-/**
- * @method array getAll($conditions = [], $sort = [], $limit = null, $only_fields = '*')
- * @method array getRow($conditions = [], $only_fields = null)
- * @method array getValue($fieldname, $conditions = [])
- * @method array fetchAll($sql, $datas = [])
- * @method array fetchRow($sql, $datas = [])
- * @method int insert(array $datas)
- * @method int update(array $datas, array $conditions)
- * @method int delete(array $conditions = [])
- * @method array routine($name, $params = [])
- */
 abstract class Model
 {
     const HOOK_BEFORE = 'before';
@@ -211,8 +200,8 @@ abstract class Model
         }
         catch(DatabaseException $e) {
             throw new ModelException($e->getMessage());
-            registry('Debugbar')['exceptions']->addException($e);
-            return null;
+            //registry('Debugbar')['exceptions']->addException($e);
+            //return null;
         }
     }
 
