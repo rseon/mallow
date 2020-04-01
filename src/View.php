@@ -146,4 +146,14 @@ class View
     {
         (new static($path, $args))->render();
     }
+
+    /**
+     * Returns view attributes
+     *
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->args;
+    }
 }
