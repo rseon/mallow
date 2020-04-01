@@ -37,6 +37,14 @@ foreach (glob(ROOT.'/src/Helpers/*.php') as $file) {
     require_once $file;
 }
 
+/*
+ * Your own helpers
+ */
+$helpers = get_path('/app/helpers.php');
+if(file_exists($helpers)) {
+    require_once $helpers;
+}
+
 // Save config
 registry('Config', $config);
 
