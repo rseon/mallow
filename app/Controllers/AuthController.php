@@ -37,13 +37,13 @@ class AuthController extends Controller
      * @param array $request
      * @throws \Rseon\Mallow\Exceptions\AppException
      */
-    public function login(array $request)
+    public function login()
     {
         // Check login
         if(is_post()) {
             $this->csrf(route('login'));
 
-            $post = sanitize_array($_POST);
+            $post = $this->request();
             $errors = [];
             if(!isset($post['email']) || $post['email'] === '') {
                 $errors['email'] = 'Please fill in your email';
@@ -88,7 +88,7 @@ class AuthController extends Controller
      * @param array $request
      * @throws \Rseon\Mallow\Exceptions\AppException
      */
-    public function logout(array $request)
+    public function logout()
     {
         if($this->user->isAuth()) {
             $this->user->setAuth(false);
@@ -100,16 +100,16 @@ class AuthController extends Controller
     /**
      * Sign up user
      *
-     * @param array $request
+     * @throws \Rseon\Mallow\Exceptions\AppException
      * @throws \Rseon\Mallow\Exceptions\ModelException
      */
-    public function register(array $request)
+    public function register()
     {
         // Check login
         if(is_post()) {
             $this->csrf(route('register'));
 
-            $post = sanitize_array($_POST);
+            $post = $this->request();
             $errors = [];
             if(!isset($post['name']) || $post['name'] === '') {
                 $errors['name'] = 'Please fill in your name';

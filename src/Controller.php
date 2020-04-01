@@ -10,20 +10,23 @@ abstract class Controller
     protected $action;
     protected $layout;
     protected $view;
+    protected $request;
 
     /**
      * Controller constructor.
-     * @param string $action
+     *
+     * @param string|null $action
+     * @param array $request
      * @throws Exceptions\AppException
      */
-    public function __construct(string $action = null)
+    public function __construct(string $action = null, array $request = [])
     {
         $this->current = normalize_string(static::class);
+        $this->request = $request;
 
         if($action) {
             $this->action = normalize_string($action);
         }
-
 
         if(method_exists($this, 'init')) {
             $this->init();
@@ -167,5 +170,25 @@ abstract class Controller
         }
 
         csrf()->resetToken();
+    }
+
+    /**
+     * Get request
+     *
+     * @param null $key
+     * @param null $default
+     * @return array|mixed|null
+     */
+    public function request($key = null, $default = null)
+    {
+        $data = $default;
+        if(!$key) {
+            $data = $this->request['request'];
+        }
+        else {
+            $data = $this->request['request'][$key] ?? $default;
+        }
+
+        return sanitize($data);
     }
 }
