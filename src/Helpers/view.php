@@ -10,11 +10,17 @@ if(!function_exists('asset')) {
      */
     function asset(string $path)
     {
-        $manifest = get_path('/public/mix-manifest.json');
-        if(!file_exists($manifest)) {
-            return $path;
+        $content = registry('manifest_assets');
+        if(!$content) {
+            $manifest = get_path('/public/mix-manifest.json');
+            if(!file_exists($manifest)) {
+                return $path;
+            }
+
+            $content = json_decode(file_get_contents($manifest), true);
+            registry('manifest_assets', $content);
         }
-        $content = json_decode(file_get_contents($manifest), true);
+
         return $content[$path] ?? $path;
     }
 }
