@@ -4,13 +4,18 @@ namespace App\Controllers\Admin;
 
 class IndexController extends AbstractAdminController
 {
-    /**
-     * @throws \Rseon\Mallow\Exceptions\AppException
-     */
+
     public function index()
     {
         $this->breadcrumbs();
-        $this->setHeader('Tableau de bord', 'Where all starts...');
+        $this->setHeaderText('Tableau de bord', 'It all starts here');
+        $this->setTitle('Tableau de bord');
+        $this->view('index');
+    }
+
+    public function testRoute($id)
+    {
+        dump($id);
         $this->view('index');
     }
 }

@@ -103,33 +103,23 @@ if (!function_exists('sanitize')) {
     /**
      * Sanitize a variable.
      *
-     * @param string $data
+     * @param string|array $data
      * @return false|string
      */
-    function sanitize(string $data)
+    function sanitize($data)
     {
-        return strip_tags($data);
-    }
-}
-
-if (!function_exists('sanitize_array')) {
-
-    /**
-     * Sanitize an array
-     *
-     * @param array $array
-     * @return array
-     */
-    function sanitize_array(array $array)
-    {
-        foreach($array as $k => $v) {
-            if(is_array($v)) {
-                sanitize_array($v);
+        if(is_array($data)) {
+            foreach($data as $k => $v) {
+                if(is_array($v)) {
+                    sanitize($v);
+                }
+                else {
+                    $data[$k] = sanitize($v);
+                }
             }
-            else {
-                $array[$k] = sanitize($v);
-            }
+
+            return $data;
         }
-        return $array;
+        return strip_tags($data);
     }
 }

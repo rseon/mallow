@@ -4,6 +4,12 @@
 <script src="<?php echo url('/vendor/adminlte/vendor/jquery-slimscroll/jquery.slimscroll.min.js') ?>"></script>
 <script src="<?php echo url('/vendor/adminlte/vendor/fastclick/lib/fastclick.js') ?>"></script>
 
+<script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
 <?php
 if (getenv('APP_DEBUG')) {
     $debugbar = registry('Debugbar');

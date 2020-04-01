@@ -1,6 +1,6 @@
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
-        Anything you want
+        v1.1
     </div>
-    <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; <?php echo date('Y') ?> <a href="https://github.com/rseon/mallow">Mallow Framework</a>.</strong>.
 </footer>

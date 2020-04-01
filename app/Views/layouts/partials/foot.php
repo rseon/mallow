@@ -3,6 +3,7 @@
 <script src="<?php echo asset('/js/app.js') ?>"></script>
 
 <?php
+dump(registry());
 if (getenv('APP_DEBUG')) {
     $debugbar = registry('Debugbar');
     $debugbar['time']->stopMeasure('App');

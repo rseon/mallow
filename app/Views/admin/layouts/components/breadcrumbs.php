@@ -10,8 +10,8 @@ if(isset($this->layout_breadcrumbs) && $this->layout_breadcrumbs) {
                 $text = '<i class="fa fa-fw fa-'.$b['icon'].'"></i>'.$text;
             }
 
-            if(isset($b['url']) && $b['url']) {
-                $text = "<a href='{$b['url']}'>$text</a>";
+            if(isset($b['link']) && $b['link']) {
+                $text = "<a href='{$b['link']}'>$text</a>";
             }
 
             if($i === $last) {

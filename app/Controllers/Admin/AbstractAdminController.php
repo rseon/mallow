@@ -23,7 +23,8 @@ abstract class AbstractAdminController extends Controller
         $this->user = new User;
 
         $this->layout('layouts.admin', [
-            'user' => $this->user,
+            'user' => $this->user->getAuth(),
+            'layout_active_menu' => null,
         ]);
         $this->setTitle("Administration");
     }
@@ -50,5 +51,15 @@ abstract class AbstractAdminController extends Controller
     public function layout(string $layout, array $args = [])
     {
         return parent::layout("admin.$layout", $args);
+    }
+
+    /**
+     * Set the page title
+     *
+     * @param string $title
+     */
+    public function setTitle(string $title)
+    {
+        return parent::setTitle($title . ' | Administration');
     }
 }

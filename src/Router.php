@@ -20,6 +20,33 @@ class Router
     }
 
     /**
+     * Set the default router as /{$path}/{$controller}/{$action}
+     *
+     * @param string $path
+     * @param string $namespace
+     */
+    public static function setDefaultRouter(string $path = '', string $namespace = '')
+    {
+        $instance = static::getInstance();
+
+        /**
+         * @param mixed ...$args
+         */
+        $callback = function(...$args) use ($instance, $namespace) {
+            $instance->dispatchDefaultRouter($args, $namespace);
+        };
+
+        // If no controller, call index controller : /$module_path/index
+        $instance->addRouteMap(['GET', 'POST'], $path, $path, $callback);
+
+        // If no action, call the index action of the controller : /$module_path/$controller/index
+        $instance->addRouteMap(['GET', 'POST'], "$path.controller", "$path/(.*)", $callback, ['controller']);
+
+        // Runs the controller with its action : /$module_path/$controller/$action
+        $instance->addRouteMap(['GET', 'POST'], "$path.dispatch", "$path/(.*)/(.*)", $callback, ['controller', 'action']);
+    }
+
+    /**
      * Call static methods to manage routes : get, post and map
      *
      * @param $name
@@ -160,6 +187,18 @@ class Router
             return $this->routes;
         }
         return $this->routes[strtoupper($method)] ?? [];
+    }
+
+    /**
+     * Force current route
+     *
+     * @param array $route
+     * @return array
+     */
+    public function setCurrentRoute(array $route)
+    {
+        $this->cache_current = $route;
+        return $route;
     }
 
     /**
@@ -422,7 +461,7 @@ class Router
      * @return mixed
      * @throws Exceptions\AppException
      */
-    public function dispatch(string $namespace)
+    public function dispatch(string $namespace = '')
     {
         $current = $this->getCurrentRoute();
         registry('Debugbar')->getCollector('route')->set($current);
@@ -442,14 +481,84 @@ class Router
             list($controller, $action) = explode('@', $controller);
         }
 
-        $controller = new $controller($action);
+        $controller = new $controller($action, $current['request']);
         if($action) {
+            //$controller->$action();
             call_user_func_array([$controller, $action], $current['request']);
         }
         else {
             call_user_func_array($controller, $current['request']);
         }
         return $controller->run();
+    }
+
+    /**
+     * Dispatch the default router as /{$path}/{$controller}/{$action}
+     *
+     * @param array $args
+     * @param string $namespace
+     * @throws Exceptions\AppException
+     */
+    public function dispatchDefaultRouter(array $args, string $namespace = '')
+    {
+        $controller = 'index';
+        $action = 'index';
+        $request = [];
+        if(is_array($args[0])) {
+            $request = $args[0];
+        }
+        elseif(isset($args[1]) && is_array($args[1])) {
+            $controller = $args[0];
+            $request = $args[1];
+        }
+        elseif(isset($args[2]) && is_array($args[2])) {
+            $controller = $args[0];
+            $action = $args[1];
+            $request = $args[2];
+        }
+
+        $controller = normalize_string_reverse($controller, 'controller');
+        $action = normalize_string_reverse($action, 'action');
+
+        $controllerName = $namespace.'\\'.$controller.'Controller';
+
+        $notFound = false;
+        if(!class_exists($controllerName)) {
+            $notFound = true;
+        }
+        else {
+            $ctrl = new $controllerName($action);
+            if($action && !method_exists($ctrl, $action)) {
+                $notFound = true;
+            }
+            unset($ctrl);
+        }
+
+        if($notFound) {
+            $request = [
+                'controller' => $controller,
+                'action' => $action,
+                'request' => $request,
+            ];
+
+            $action = 'routeNotFound';
+            $controller = 'Error';
+        }
+        else {
+            $request = ['request' => $request];
+        }
+
+        $route = [
+            'path' => explode('?', $_SERVER['REQUEST_URI'])[0],
+            'method' => $_SERVER['REQUEST_METHOD'],
+            'name' => $action,
+            'callback' => "{$controller}Controller@{$action}",
+            'namespace' => $namespace,
+            'request' => $request,
+        ];
+
+        $this->setCurrentRoute($route);
+        $this->dispatch();
     }
 
 }

@@ -6,6 +6,21 @@ class AuthController extends AbstractAdminController
 {
 
     /**
+     * Redirect to dashboard if logged
+     *
+     * @throws \Rseon\Mallow\Exceptions\AppException
+     */
+    public function init()
+    {
+        parent::init();
+        if(in_array($this->getAction(), ['login'])) {
+            if($this->user->isAuth()) {
+                redirect(admin_url('/'));
+            }
+        }
+    }
+
+    /**
      * Sign in user
      *
      * @throws \Rseon\Mallow\Exceptions\AppException
@@ -16,7 +31,7 @@ class AuthController extends AbstractAdminController
         if(is_post()) {
             $this->csrf(admin_url('/auth/login'));
 
-            $post = sanitize_array($_POST);
+            $post = $this->request();
             $errors = [];
             if(!isset($post['username']) || $post['username'] === '') {
                 $errors['username'] = 'Merci de renseigner votre identifiant';
@@ -63,10 +78,7 @@ class AuthController extends AbstractAdminController
      */
     public function logout()
     {
-        if($this->user->isAuth()) {
-            $this->user->setAuth(false);
-        }
-
+        $this->user->setAuth(false);
         redirect(admin_url('/index/index'));
     }
 }

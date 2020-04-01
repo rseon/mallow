@@ -30,9 +30,9 @@ class AccountController extends Controller
     }
 
     /**
-     * @param array $request
+     *
      */
-    public function index(array $request)
+    public function index()
     {
         $this->setTitle("My account");
         $this->view('account.index');

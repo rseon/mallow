@@ -31,6 +31,7 @@ abstract class Model
     protected $hidden = [];
     protected $required = [];
     protected $validate = [];
+    protected $messages = [];
     protected $show_hidden = false;
 
     /**
@@ -209,6 +210,7 @@ abstract class Model
             return $data;
         }
         catch(DatabaseException $e) {
+            throw new ModelException($e->getMessage());
             registry('Debugbar')['exceptions']->addException($e);
             return null;
         }
@@ -287,7 +289,7 @@ abstract class Model
     {
         $attributes = $this->attributes;
         foreach($attributes as $k => $v) {
-            $attribute = $this->getAttribute($k);
+            $attributes[$k] = $this->getAttribute($k);
         }
 
         return $attributes;
@@ -324,7 +326,6 @@ abstract class Model
             switch(get_class($this->attributes[$name])) {
                 case 'DateTime':
                     return $this->attributes[$name]->format('Y-m-d H:i:s');
-                    break;
             }
         }
         return $this->attributes[$name];
@@ -377,13 +378,19 @@ abstract class Model
      * If has id, update it, else insert
      *
      * @return $this
+     * @throws Exceptions\AppException
+     * @throws ModelException
      */
     public function save()
     {
         $data = $this->getAttributes();
         $class = static::class;
 
-        // Check required
+        if($errors = $this->validate($data)) {
+            throw new ModelException("Attributes are incorrect.");
+        }
+
+        /*// Check required
         foreach($this->required as $r) {
             if(!isset($data[$r]) || !$data[$r]) {
                 throw new ModelException("Field '{$r}' is required to save model {$class}.");
@@ -395,7 +402,7 @@ abstract class Model
             if(isset($data[$field]) && !$validator::validate($data[$field])) {
                 throw new ModelException("Field '{$field}' is not valid to save model {$class}.");
             }
-        }
+        }*/
 
         if($this->id) {
             $this->update($data, [
@@ -407,6 +414,31 @@ abstract class Model
         }
 
         return new static($this->id);
+    }
+
+    /**
+     * Validate the data
+     *
+     * @param array $data
+     * @return array
+     */
+    public function validate(array $data)
+    {
+        $errors = [];
+        // Check required
+        foreach($this->required as $r) {
+            if(!isset($data[$r]) || !$data[$r]) {
+                $errors[$r][] = $this->messages[$r.'.required'] ?? "The field {$r} is required";
+            }
+        }
+
+        // Check validate
+        foreach($this->validate as $field => $validator) {
+            if(isset($data[$field]) && !$validator::validate($data[$field])) {
+                $errors[$field][] = $this->messages[$field.'.validate'] ?? "The field {$field} is not valid";
+            }
+        }
+        return $errors;
     }
 
     /**

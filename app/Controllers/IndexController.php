@@ -8,11 +8,8 @@ class IndexController extends Controller
 {
     /**
      * Index page
-     *
-     * @param array $request
-     * @return $this
      */
-    public function index(array $request)
+    public function index()
     {
         $this->setTitle("Mallow - Another PHP Framework");
 
