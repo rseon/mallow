@@ -38,7 +38,7 @@ The functional is inspired of the [Dotenv](https://github.com/vlucas/phpdotenv) 
 | **APP_DEBUG** | If true, shows the Debugbar |
 | **APP_KEY** | The secure app key |
 | **APP_DOMAIN** | Your website domain |
-| **APP_HTTPS** | Boolean |
+| **APP_HTTPS** | True if you use HTTPS |
 | **DB_HOST** | Database host |
 | **DB_PORT** | Database port |
 | **DB_DATABASE** | Database name |

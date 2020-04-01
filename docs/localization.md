@@ -1,0 +1,3 @@
+# Localization
+
+> TODO : create new lang, helper, ...
