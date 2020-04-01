@@ -8,19 +8,10 @@
 
 <body>
 <div class="container">
-    <ul>
-        <?php
-        // Lang switcher
-        foreach(config('locales') as $locale => $localeData) {
-            if($locale === get_locale()) {
-                continue;
-            }
-            echo '<li><a href="'.get_current_url_locale($locale).'">'.$localeData['name'].'</a></li>';
-        }
-        ?>
-    </ul>
-
-    <?php $this->partial('layouts.partials.flash'); ?>
+    <?php
+    $this->partial('layouts.components.lang_switcher');
+    $this->partial('layouts.components.flash');
+    ?>
 
     <ul>
         <li><a href="<?php echo route('index') ?>" class="<?php if(get_current_route('name') === 'index') echo 'text-success' ?>"><?php echo __('Home') ?></a></li>
