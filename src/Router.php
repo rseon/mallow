@@ -128,6 +128,16 @@ class Router
         if(!array_key_exists($method, $this->routes)) {
             $this->routes[$method] = [];
         }
+
+        if(!$name) {
+            $name = 'auto';
+        }
+        elseif(substr($name, 0, 1) === '.') {
+            $name = 'auto'.$name;
+        }
+
+        $path = str_replace('//', '/', $path);
+
         $this->routes[$method][$name] = [
             'name' => $name,
             'method' => $method,
