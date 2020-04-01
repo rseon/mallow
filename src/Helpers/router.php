@@ -114,10 +114,11 @@ if (!function_exists('url')) {
      * Returns an url
      *
      * @param string $path
+     * @param array $params
      * @return string
      * @throws \Rseon\Mallow\Exceptions\AppException
      */
-    function url(string $path)
+    function url(string $path, array $params = [])
     {
         $protocol = getenv('APP_HTTPS') ? 'https://' : 'http://';
         $domain = getenv('APP_DOMAIN');
@@ -125,6 +126,10 @@ if (!function_exists('url')) {
         $subdomain = config('locales')[get_locale()]['subdomain'] ?? '';
         if($subdomain) {
             $domain = $subdomain . '.' . $domain;
+        }
+
+        if($params) {
+            $path .= '?'.http_build_query($params);
         }
 
         return $protocol.$domain.$path;
