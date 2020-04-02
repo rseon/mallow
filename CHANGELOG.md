@@ -1,6 +1,17 @@
 # Changelog
 
-# 1.2
+## 1.3
+### Added
+- Retrieve model ID with method `getId()`
+- Secure helpers
+- "Remember me" token for auth
+
+### Fixed
+- Default router
+- Model casts
+
+
+## 1.2
 ### Added
 - Load your own helpers (on /app/helpers.php)
 - Default router for non-rewrited urls
@@ -22,7 +33,7 @@
 - String helper `sanitize_array`
 
 
-# 1.1
+## 1.1
 ### Added
 - Frontend scaffolding
 - HTTP helpers
@@ -35,5 +46,5 @@
 - HTTP helpers in Controller
 
 
-# 1.0
+## 1.0
 Initial release
