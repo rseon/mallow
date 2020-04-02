@@ -12,10 +12,4 @@ class IndexController extends AbstractAdminController
         $this->setTitle('Tableau de bord');
         $this->view('index');
     }
-
-    public function testRoute($id)
-    {
-        dump($id);
-        $this->view('index');
-    }
 }

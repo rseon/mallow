@@ -18,7 +18,12 @@ $path = config('path_admin');
 $namespace = config('controllers').'\\Admin';
 
 // Test other route than default
-Router::get('admin.test', $path.'/test/(.*)', 'Admin\\IndexController@testRoute', ['id']);
+Router::get('admin.test', $path.'/test/(.*)', function($id) {
+    $controller = new App\Controllers\Admin\ClosureController();
+    dump($id);
+    $controller->view('index');
+    $controller->run();
+}, ['id']);
 
 /**
  * Set the default router as /{$path}/{$controller}/{$action}
