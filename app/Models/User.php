@@ -18,7 +18,7 @@ class User extends Model
     use Authenticable;
 
     /**
-     * Table name in database
+     * The table associated with the model.
      *
      * @var string
      */
