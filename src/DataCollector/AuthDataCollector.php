@@ -19,7 +19,7 @@ class AuthDataCollector extends DataCollector implements Renderable
                         $data = $session['name'];
                     }
                     else {
-                        $data = substr($name, -1*$length+1);
+                        $data = substr($name, -1*$length);
                     }
                 }
             }
