@@ -175,11 +175,11 @@ abstract class Controller
     /**
      * Get request
      *
-     * @param null $key
-     * @param null $default
+     * @param string|null $key
+     * @param mixed|null $default
      * @return array|mixed|null
      */
-    public function request($key = null, $default = null)
+    public function request(string $key = null, $default = null)
     {
         $data = $default;
         if(!$key) {

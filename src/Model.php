@@ -10,17 +10,82 @@ abstract class Model
     const HOOK_BEFORE = 'before';
     const HOOK_AFTER = 'after';
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table;
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
     protected $primary = 'id';
-    protected $id;
-    protected $attributes = [];
-    protected $found;
-    protected $cast = [];
-    protected $hooks = [];
+
+    /**
+     * These fields will not be shown in the model
+     *
+     * @var array
+     */
     protected $hidden = [];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $cast = [];
+
+    /**
+     * Required fields to validate the model
+     *
+     * @var array
+     */
     protected $required = [];
+
+    /**
+     * The attributes that should be validated.
+     *
+     * @var array
+     */
     protected $validate = [];
+
+    /**
+     * Validation messages
+     *
+     * @var array
+     */
     protected $messages = [];
+
+    /**
+     * Model attributes
+     *
+     * @var array
+     */
+    protected $attributes = [];
+
+    /**
+     * Is module found ?
+     *
+     * @var bool
+     */
+    protected $found;
+
+    /**
+     * Hooks added
+     *
+     * @var array
+     */
+    protected $hooks = [];
+
+    /**
+     * Primary-key value
+     *
+     * @var mixed
+     */
+    protected $id;
     protected $show_hidden = false;
 
     /**

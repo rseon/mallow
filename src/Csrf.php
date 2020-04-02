@@ -119,6 +119,6 @@ class Csrf
             throw new AppException('Unable to generate binary data.');
         }
 
-        return hash('sha256', $bytes.getenv('APP_KEY'));
+        return make_hash($bytes);
     }
 }

@@ -1,7 +1,5 @@
 # Router
 
-> TODO : default router
-
 - **[Creating routes](/router?id=creating-routes)**
 - **[Available methods](/router?id=available-methods)**
     - [Definition](/router?id=definition)
@@ -9,6 +7,8 @@
 - **[Callback](/router?id=callback)**
     - [As a string](/router?id=as-a-string)
     - [As a closure](/router?id=as-a-closure)
+- **[Default router](/router?id=default-router)**
+    - [Setting up](/router?id=setting-up)
 - **[Working example](/router?id=working-example)**
 - **[Useful methods](/router?id=useful-methods)**
 
@@ -22,6 +22,8 @@ All the routes defined will be processed in the `public` directory by the
 [index.php](https://github.com/rseon/mallow/blob/master/public/index.php) (according to the
 [.htaccess](https://github.com/rseon/mallow/blob/master/public/.htaccess) file). That means when you visit an URL, the
 router will get it and returns the callback defined by the route.
+
+?> **Tip** : if you don't want to manage your routes manually, you can use the [default router](/router?id=default-router).
 
 
 ## Available methods
@@ -80,6 +82,8 @@ If the route is a regex, the first arguments are the parameters.
 
 In all case, the last is the request (GET and/or POST) as array.
 
+?> **Tip** : from a controller, you can retrieve the request using the method `request`
+
 
 ### As a string
 
@@ -105,6 +109,37 @@ Router::get('closure', '/closure-([0-9]+).html', function(int $id, array $reques
     $controller->run();
 }, ['id']);
 ``` 
+
+
+## Default router
+
+If you don't want to manage your routes you can use the default router.
+The default router defines the controller and the action of the route callback using the url parts.
+If they are not defined, `index` is used by default.
+
+Example :
+- URL = '/' : callback = `IndexController@index`
+- URL = '/super-test' : callback = `SuperTestController@index`
+- URL = '/super-test/my-action' : callback = `SuperTestController@myAction`
+
+!> **Warning** : the `route` helper will not works because the routes doesn't exist. Instead of this, you must use
+the `url` helper with uri path.
+
+
+### Setting up
+Replace your [app/routes.php](https://github.com/rseon/mallow/blob/master/app/routes.php) by this content :
+
+```php
+use Rseon\Mallow\Router;
+
+$path = '/'; // Example : "/admin" => all the uri starting with '/admin' will use the default router
+$namespace = config('controllers');
+
+Router::setDefaultRouter($path, $namespace);
+```
+
+You must define the URI `$path` and the `$namespace` of your controllers.
+
 
 
 ## Working example

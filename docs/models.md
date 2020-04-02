@@ -3,6 +3,7 @@
 > TODO : methods, how to...
 
 - **[Introduction](/models?id=introduction)**
+- **[Namespacing](/models?id=namespacing)**
 - **[Defining model](/models?id=defining-model)**
     - [Table name](/models?id=table-name)
     - [Primary key](/models?id=primary-key)
@@ -18,7 +19,24 @@ Models are simple ActiveRecord implementation for working with your database.
 Each database table has a corresponding "Model" which is used to interact with that table.
 Models allow you to query for data in your tables, as well as insert new records into the table.
 
-The simplest way to return records from database is an array but the funniest is an object to manipulate it easily.
+Because Mallow has not a full ORM, only simple actions can be done using objects :
+- Retrieve (without relation)
+- Save (insert or update) and delete
+- Cast and validate attributes
+
+For more specific queries (ie with relations), use may use the [database](/database) methods.
+
+
+## Namespacing
+
+Models are autoloaded thanks to their namespace.
+That means you can put models in subdirectories to organize them as *modules*.
+
+For example, if you want have specific model for an administrative module you may want to put your models in
+`app/Models/Admin`. So an `User` will have the namespace `App\Models\Admin`.
+ 
+?> **Tip** : the base namespace is defined in the [app/config.php](https://github.com/rseon/mallow/blob/master/app/config.php) file
+
 
 
 ## Defining model
