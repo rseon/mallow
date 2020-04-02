@@ -14,7 +14,7 @@
                 <!--Alexander Pierce - Web Developer-->
                 <?php echo $this->user['name'] ?> - <?php echo $this->user['email'] ?>
                 <!--small>Member since Nov. 2012</small-->
-                <small>Member since <?php echo $this->user['created_at']->format('M Y') ?></small>
+                <small>Member since <?php echo (new DateTime($this->user['created_at']))->format('M Y') ?></small>
             </p>
         </li>
         <li class="user-body">

@@ -376,12 +376,12 @@ abstract class Model
             return $default;
         }
 
-        if(gettype($this->attributes[$name]) === 'object') {
+        /*if(gettype($this->attributes[$name]) === 'object') {
             switch(get_class($this->attributes[$name])) {
                 case 'DateTime':
                     return $this->attributes[$name]->format('Y-m-d H:i:s');
             }
-        }
+        }*/
         return $this->attributes[$name];
     }
 
@@ -449,6 +449,17 @@ abstract class Model
     {
         $data = $this->getAttributes();
         $class = static::class;
+
+        // Cast attributes
+        foreach($data as $k => $v) {
+            if(gettype($v) === 'object') {
+                switch(get_class($v)) {
+                    case 'DateTime':
+                        $data[$k] = $v->format('Y-m-d H:i:s');
+                        break;
+                }
+            }
+        }
 
         if($errors = $this->validate($data)) {
             throw new ModelException("Attributes are incorrect.");

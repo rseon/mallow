@@ -56,6 +56,10 @@ trait Authenticable
      */
     public function setAuth($data = false)
     {
+        if($data === false) {
+            session_destroy();
+            $this->unsetRememberMe();
+        }
         $_SESSION[$this->getAuthSessionName()] = $data;
         return $this;
     }
@@ -63,14 +67,21 @@ trait Authenticable
     /**
      * Get authenticate data
      *
-     * @return array|mixed
+     * @param string|null $key
+     * @return bool|mixed|null
      * @throws \Rseon\Mallow\Exceptions\AppException
      */
-    public function getAuth()
+    public function getAuth(string $key = null)
     {
-        return array_key_exists($this->getAuthSessionName(), $_SESSION)
-            ? $_SESSION[$this->getAuthSessionName()]
-            : [];
+        if(!array_key_exists($this->getAuthSessionName(), $_SESSION)) {
+            return false;
+        }
+
+        if($key) {
+            return $_SESSION[$this->getAuthSessionName()][$key] ?? null;
+        }
+
+        return $_SESSION[$this->getAuthSessionName()];
     }
 
     /**
@@ -107,11 +118,45 @@ trait Authenticable
     /**
      * @return string
      */
+    public function getAuthRememberTokenColumn()
+    {
+        return defined('static::AUTH_REMEMBER_TOKEN')
+            ? static::AUTH_REMEMBER_TOKEN
+            : 'remember_token';
+    }
+
+    /**
+     * @return string
+     */
     public function getAuthPasswordColumn()
     {
         return defined('static::AUTH_PASSWORD')
             ? static::AUTH_PASSWORD
             : 'password';
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkRememberMe()
+    {
+        if(!array_key_exists('remember_me', $_COOKIE) || !array_key_exists('remember_token', $_COOKIE)) {
+            return false;
+        }
+
+        $check = $this->getRow([
+            $this->getAuthRememberTokenColumn() => sanitize($_COOKIE['remember_token']),
+        ]);
+
+        if(!$check) {
+            return false;
+        }
+
+        if($_COOKIE['remember_me'] !== make_hash($check['id'])) {
+            return false;
+        }
+
+        return static::model($check);
     }
 
     /**
@@ -138,17 +183,48 @@ trait Authenticable
             return $this;
         }
 
-        $this->setAuth(static::model($found)->getAttributes());
+        $hidden = $this->hidden;
+        $found = array_filter($found, function($key) use ($hidden) {
+            return !in_array($key, $hidden);
+        }, ARRAY_FILTER_USE_KEY);
+
+        $this->setAuth($found);
 
         return $this;
     }
 
+    /**
+     * Set the "remember me" cookie
+     *
+     * @throws \Rseon\Mallow\Exceptions\AppException
+     */
     protected function setRememberMe()
     {
-        $value = hash('sha256', $this->getId());
+        $value = make_hash($this->getAuth('id'));
         $token = token(250);
 
-        setcookie("remember_me", $value, time()+ (30 * 24 * 60 * 60 * 1000));
-        setcookie("remember_token", $token, time()+ (30 * 24 * 60 * 60 * 1000));
+        setcookie("remember_me", $value, time()+(60*60*24*30), '/', getenv('APP_DOMAIN'));
+        setcookie("remember_token", $token, time()+(60*60*24*30), '/', getenv('APP_DOMAIN'));
+
+        $this->update([
+            $this->getAuthRememberTokenColumn() => $token,
+        ], [
+            $this->primary => $this->getAuth('id'),
+        ]);
+    }
+
+    /**
+     * Unset the "remember me" token
+     */
+    protected function unsetRememberMe()
+    {
+        setcookie("remember_me", '', time()-(60*60*24*30), '/', getenv('APP_DOMAIN'));
+        setcookie("remember_token", '', time()-(60*60*24*30), '/', getenv('APP_DOMAIN'));
+
+        $this->update([
+            $this->getAuthRememberTokenColumn() => null,
+        ], [
+            $this->primary => $this->getAuth('id'),
+        ]);
     }
 }

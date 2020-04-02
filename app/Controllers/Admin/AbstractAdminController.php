@@ -11,20 +11,49 @@ abstract class AbstractAdminController extends Controller
     use AdminUtils;
 
     /**
+     * Authenticated user
+     *
      * @var User
      */
     protected $user;
 
     /**
+     * Remembered user
+     *
+     * @var User|bool
+     */
+    protected $remember;
+
+    /**
+     * Check if user is logged and apply basic initialization
+     *
      * @throws \Rseon\Mallow\Exceptions\AppException
      */
     public function init()
     {
         $this->user = new User;
 
-        // Redirect if not logged
-        if(!in_array($this->getAction(), ['login', 'logout']) && !$this->user->isAuth()) {
-            redirect(admin_url('/auth/login'));
+        // If not logged
+        if(!$this->user->isAuth()) {
+
+            // Check the "remember me"
+            $this->remember = $this->user->checkRememberMe();
+            if($this->remember !== false && !in_array($this->getAction(), ['login', 'logout', 'lockscreen'])) {
+                // Save current URL to be redirected to after login
+                $_SESSION['back_login'] = $_SERVER['REQUEST_URI'];
+
+                redirect(admin_url('/auth/lockscreen'));
+            }
+
+            // Redirect
+            if(!in_array($this->getAction(), ['login', 'logout', 'lockscreen'])) {
+                // Save current URL to be redirected to after login
+                $_SESSION['back_login'] = $_SERVER['REQUEST_URI'];
+
+                redirect(admin_url('/auth/login'));
+            }
+
+            return;
         }
 
         $this->layout('layouts.admin', [
