@@ -4,20 +4,6 @@
  * Define some helpers functions
  */
 
-if (!function_exists('check_hash')) {
-
-    /**
-     * Check a hash is correct
-     *
-     * @param $value
-     * @param $hash
-     * @return bool
-     */
-    function check_hash($value, $hash)
-    {
-        return password_verify($value.getenv('APP_KEY'), $hash);
-    }
-}
 
 if (!function_exists('config')) {
 
@@ -55,20 +41,6 @@ if (!function_exists('get_path')) {
             return ROOT;
         }
         return ROOT.'/'.ltrim($path, '/');
-    }
-}
-
-if (!function_exists('make_hash')) {
-
-    /**
-     * Hash a value
-     *
-     * @param $value
-     * @return false|string|null
-     */
-    function make_hash($value)
-    {
-        return password_hash($value.getenv('APP_KEY'), PASSWORD_DEFAULT);
     }
 }
 
