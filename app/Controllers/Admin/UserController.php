@@ -57,7 +57,7 @@ class UserController extends AbstractAdminController
         $user->setAttributes([
             'name' => $this->request('name'),
             'email' => $this->request('email'),
-            'password' => make_hash('azertyuiop'),
+            'password' => make_password('azertyuiop'),
         ]);
 
         $this->saveModel($user, $redirect);

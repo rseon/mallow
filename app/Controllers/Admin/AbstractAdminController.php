@@ -22,6 +22,11 @@ abstract class AbstractAdminController extends Controller
     {
         $this->user = new User;
 
+        // Redirect if not logged
+        if(!in_array($this->getAction(), ['login', 'logout']) && !$this->user->isAuth()) {
+            redirect(admin_url('/auth/login'));
+        }
+
         $this->layout('layouts.admin', [
             'user' => $this->user->getAuth(),
             'layout_active_menu' => null,

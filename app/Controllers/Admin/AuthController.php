@@ -46,7 +46,9 @@ class AuthController extends AbstractAdminController
                 redirect(admin_url('/auth/login'));
             }
 
-            $this->user->auth($post['username'], $post['password']);
+            $remember = $this->request('remember', false) === "1";
+
+            $this->user->auth($post['username'], $post['password'], $remember);
             if(!$this->user->isAuth()) {
                 $reason = $this->user->getReason();
                 switch($reason) {

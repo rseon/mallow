@@ -141,7 +141,7 @@ class AuthController extends Controller
             $User = new User;
             $User->name = $post['name'];
             $User->email = $post['email'];
-            $User->password = make_hash($post['password']);
+            $User->password = make_password($post['password']);
             $User->save();
 
             flash()->success('You are registered, you can now login !');

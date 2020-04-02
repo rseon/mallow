@@ -19,14 +19,21 @@ trait Authenticable
     /**
      * Try to authenticate
      *
-     * @param $identifier
-     * @param $password
+     * @param string $identifier
+     * @param string $password
+     * @param bool $remember
      * @return Authenticable
      * @throws \Rseon\Mallow\Exceptions\AppException
      */
-    public function auth($identifier, $password)
+    public function auth(string $identifier, string $password, $remember = false)
     {
-        return $this->attemptLogin($identifier, $password);
+        $this->attemptLogin($identifier, $password);
+
+        if($this->isAuth() && $remember) {
+            $this->setRememberMe();
+        }
+
+        return $this;
     }
 
     /**
@@ -126,7 +133,7 @@ trait Authenticable
             return $this;
         }
 
-        if(!check_hash($password, $found[$this->getAuthPasswordColumn()])) {
+        if(!check_password($password, $found[$this->getAuthPasswordColumn()])) {
             $this->reason_not_logged = 'bad_password';
             return $this;
         }
@@ -134,5 +141,14 @@ trait Authenticable
         $this->setAuth(static::model($found)->getAttributes());
 
         return $this;
+    }
+
+    protected function setRememberMe()
+    {
+        $value = hash('sha256', $this->getId());
+        $token = token(250);
+
+        setcookie("remember_me", $value, time()+ (30 * 24 * 60 * 60 * 1000));
+        setcookie("remember_token", $token, time()+ (30 * 24 * 60 * 60 * 1000));
     }
 }
