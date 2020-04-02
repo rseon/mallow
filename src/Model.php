@@ -336,6 +336,16 @@ abstract class Model
     }
 
     /**
+     * Get model id
+     *
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * Cast an attribute
      *
      * @param string $attribute
