@@ -376,12 +376,6 @@ abstract class Model
             return $default;
         }
 
-        /*if(gettype($this->attributes[$name]) === 'object') {
-            switch(get_class($this->attributes[$name])) {
-                case 'DateTime':
-                    return $this->attributes[$name]->format('Y-m-d H:i:s');
-            }
-        }*/
         return $this->attributes[$name];
     }
 
@@ -464,20 +458,6 @@ abstract class Model
         if($errors = $this->validate($data)) {
             throw new ModelException("Attributes are incorrect.");
         }
-
-        /*// Check required
-        foreach($this->required as $r) {
-            if(!isset($data[$r]) || !$data[$r]) {
-                throw new ModelException("Field '{$r}' is required to save model {$class}.");
-            }
-        }
-
-        // Check validate
-        foreach($this->validate as $field => $validator) {
-            if(isset($data[$field]) && !$validator::validate($data[$field])) {
-                throw new ModelException("Field '{$field}' is not valid to save model {$class}.");
-            }
-        }*/
 
         if($this->id) {
             $this->update($data, [
