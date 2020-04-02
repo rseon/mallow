@@ -1,8 +1,7 @@
 # Controllers
 
-> TODO : request
-
 - **[Introduction](/controllers?id=introduction)**
+- **[Namespacing](/controllers?id=namespacing)**
 - **[Defining controllers](/controllers?id=defining-controllers)**
 - **[Single Action Controllers](/controllers?id=single-action-controllers)**
 - **[Specific controllers](/controllers?id=specific-controllers)**
@@ -17,6 +16,19 @@ Instead of defining all of your request handling logic as Closures in route file
 behavior using Controller classes.
 Controllers can group related request handling logic into a single class.
 Controllers are stored in the `app/Controllers` directory.
+
+
+## Namespacing
+
+Controllers are autoloaded thanks to their namespace.
+That means you can put controllers in subdirectories to organize them as *modules*.
+
+For example, if you want separate account controllers from front-office you may want to put your controllers in
+`app/Controllers/Account`. So an `IndexController` will have the namespace `App\Controllers\Account` and you can use
+it as callback in your route using `Account\IndexController`.
+ 
+?> **Tip** : the base namespace is defined in the [app/config.php](https://github.com/rseon/mallow/blob/master/app/config.php) file
+
 
 
 ## Defining controllers
@@ -143,6 +155,9 @@ $this->getView() : Rseon\Mallow\View
 
 // Define the layout to use
 $this->layout(string $layout, array $args = []) : Rseon\Mallow\View
+
+// Get the current request (GET or POST)
+$this->request(string $key = null, $default = null) : mixed
 
 // Set the page title
 $this->setTitle(string $title) : void

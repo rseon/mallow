@@ -11,6 +11,7 @@
 
 - Models
     - [Overview](models.md)
+    - [Validation](model_validation.md)
     - [Traits](model_traits.md)
     - [Database](database.md)
 

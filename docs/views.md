@@ -16,7 +16,9 @@
 Views contain the HTML served by your application and separate your controller / application logic from your presentation logic.
 Views are stored in the `app/Views` directory.
 
-?> There is no templating system, it's only pure-PHP. Be careful to **only** show variables, don't be silly ;)
+!> There is no templating system, it's only pure-PHP. Be careful to **only** show variables, don't be silly ;)
+
+?> **Tip** : the base path to the view files is defined in the [app/config.php](https://github.com/rseon/mallow/blob/master/app/config.php) file
 
 
 ## Path convention
