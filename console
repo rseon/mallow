@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+// Load root
+define('ROOT', realpath(dirname(__FILE__)));
+require ROOT . '/vendor/autoload.php';
+Rseon\Mallow\Dotenv::load(ROOT);
+$config = require_once ROOT.'/app/config.php';
+require_once ROOT.'/src/helpers.php';
+foreach (glob(ROOT.'/src/Helpers/*.php') as $file) {
+    require_once $file;
+}
+registry('Config', $config);
+registry('Database', Rseon\Mallow\Database::connect(config('database')));
+
+// Launch console
+array_shift($argv);
+
+try {
+    $console = new \Rseon\Mallow\Console($argv);
+    echo $console->run();
+    exit(0);
+}
+catch (\Rseon\Mallow\Exceptions\ConsoleException $e) {
+    echo '/!\ ' . $e->getMessage();
+    exit(1);
+}

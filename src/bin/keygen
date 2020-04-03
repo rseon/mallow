@@ -1,6 +1,0 @@
-#!/usr/bin/env php
-<?php
-require_once dirname(__FILE__).'/../Helpers/secure.php';
-
-echo PHP_EOL.'Paste this APP_KEY into your .env file :'.PHP_EOL.PHP_EOL;
-echo token(32).PHP_EOL.PHP_EOL;
