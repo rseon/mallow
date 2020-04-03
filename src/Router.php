@@ -298,13 +298,19 @@ class Router
                 'callback' => 'ErrorController@routeNotFound',
                 'namespace' => $namespace,
                 'request' => [
-                    'url' => $url,
-                    'method' => $method,
-                ]
+                    'request' => [
+                        'url' => $url,
+                        'method' => $method,
+                    ],
+                ],
             ];
         }
 
-        $current['request']['request'] = array_merge($_GET, $_POST);
+        if(!isset($current['request']['request'])) {
+            $current['request']['request'] = [];
+        }
+
+        $current['request']['request'] = array_merge($_GET, $_POST, $current['request']['request']);
 
         $this->cache_current = $current;
         return $current;
@@ -434,7 +440,9 @@ class Router
         try {
             $route = $this->getRoute($name, $method);
         } catch (RouterException $e) {
-            registry('Debugbar')['exceptions']->addException($e);
+            if(debug()->isEnabled()) {
+                debug()->getDebugbar()['exceptions']->addException($e);
+            }
             return null;
         }
 
@@ -475,7 +483,9 @@ class Router
     public function dispatch(string $namespace = '')
     {
         $current = $this->getCurrentRoute();
-        registry('Debugbar')->getCollector('route')->set($current);
+        if(debug()->isEnabled()) {
+            debug()->getCollector('route')->set($current);
+        }
 
         // Is it closure ?
         if(gettype($current['callback']) === 'object') {
