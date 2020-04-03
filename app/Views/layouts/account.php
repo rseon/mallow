@@ -2,7 +2,7 @@
 <html lang="<?php echo get_locale() ?>">
 
 <head>
-    <?php $this->partial('layouts.partials.head'); ?>
+    <?php echo $this->partial('layouts.partials.head'); ?>
     <title><?php echo get_meta('title', __('My account')) ?></title>
 </head>
 
@@ -18,6 +18,6 @@
 
     <?php echo $this->content(); ?>
 </div>
-<?php $this->partial('layouts.partials.foot'); ?>
+<?php echo $this->partial('layouts.partials.foot'); ?>
 </body>
 </html>

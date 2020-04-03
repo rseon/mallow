@@ -27,6 +27,19 @@ if (!function_exists('config')) {
     }
 }
 
+if (!function_exists('debug')) {
+
+    /**
+     * Get the debuger
+     *
+     * @return mixed
+     */
+    function debug()
+    {
+        return \Rseon\Mallow\Debug::getInstance();
+    }
+}
+
 if (!function_exists('get_path')) {
 
     /**

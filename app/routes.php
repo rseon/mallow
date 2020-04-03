@@ -28,7 +28,7 @@ Router::get('closure', '/closure-([0-9]+).html', function(int $id, array $reques
         'id' => $id,
         'request' => $request,
     ]);
-    $controller->run();
+    echo $controller->run();
 }, ['id']);
 
 // Test XHR

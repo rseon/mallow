@@ -3,9 +3,7 @@
 <meta name="csrf-token" content="<?php echo get_csrf() ?>">
 <?php
 // Debugbar
-if (getenv('APP_DEBUG')) {
-    echo registry('Debugbar')->getJavascriptRenderer()->renderHead();
-}
+echo debug()->renderHead();
 
 // Alternate
 foreach(array_keys(config('locales')) as $locale) {

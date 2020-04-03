@@ -58,19 +58,19 @@ registry('Router', \Rseon\Mallow\Router::getInstance());
 // Connect to Database
 registry('Database', Rseon\Mallow\Database::connect(config('database')));
 
-// Add debugbar
-$debugbar = new DebugBar\StandardDebugBar();
-$pdo = new DebugBar\DataCollector\PDO\TraceablePDO(registry('Database')->getPDO());
-$debugbar->addCollector(new DebugBar\DataCollector\PDO\PDOCollector($pdo));
-$debugbar->addCollector(new Rseon\Mallow\DataCollector\ViewDataCollector());
-$debugbar->addCollector(new Rseon\Mallow\DataCollector\RouteDataCollector());
-$debugbar->addCollector(new Rseon\Mallow\DataCollector\LocaleDataCollector());
-$debugbar->addCollector(new Rseon\Mallow\DataCollector\AuthDataCollector());
-$debugbar['time']->startMeasure('App', 'Application');
-registry('Debugbar', $debugbar);
+// Debug
+if(debug()->isEnabled()) {
+    debug()->addCollectors([
+        new DebugBar\DataCollector\PDO\PDOCollector(new DebugBar\DataCollector\PDO\TraceablePDO(registry('Database')->getPDO())),
+        new Rseon\Mallow\DataCollector\ViewDataCollector(),
+        new Rseon\Mallow\DataCollector\RouteDataCollector(),
+        new Rseon\Mallow\DataCollector\LocaleDataCollector(),
+        new Rseon\Mallow\DataCollector\AuthDataCollector(),
+    ]);
+}
 
 // Dispatch current route to controller
-registry('Router')->dispatch(config('controllers'));
+echo registry('Router')->dispatch(config('controllers'));
 
 // Clear sessions
 flash()->clear();

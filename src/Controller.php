@@ -2,8 +2,12 @@
 
 namespace Rseon\Mallow;
 
+use Rseon\Mallow\Controllers\Traits\Header;
+
 abstract class Controller
 {
+    use Header;
+
     const DEFAULT_LAYOUT = 'layouts.app';
 
     protected $current;
@@ -11,6 +15,7 @@ abstract class Controller
     protected $layout;
     protected $view;
     protected $request;
+    protected $headers = [];
 
     /**
      * Controller constructor.
@@ -27,6 +32,8 @@ abstract class Controller
         if($action) {
             $this->action = normalize_string($action);
         }
+
+        $this->setDefaultHeaders();
 
         if(method_exists($this, 'init')) {
             $this->init();
@@ -50,12 +57,7 @@ abstract class Controller
      */
     public function run()
     {
-        if(is_xhr()) {
-            if(!array_key_exists('Content-Type', headers_list())) {
-                header('Content-Type: application/json');
-            }
-            return;
-        }
+        $this->displayHeaders();
 
         if($this->view === false) {
             return;
@@ -68,7 +70,7 @@ abstract class Controller
         }
 
         if($this->layout === false) {
-            return $this->view->render();
+            return $this->view;
         }
 
         if(!$this->layout) {
@@ -76,7 +78,7 @@ abstract class Controller
         }
 
         $this->layout->assign('content', $this->view);
-        return $this->layout->render();
+        return $this->layout;
     }
 
     /**

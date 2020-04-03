@@ -21,7 +21,9 @@ class ErrorController extends BaseErrorController
 
         header("HTTP/1.0 404 Not Found");
 
-        registry('Debugbar')['exceptions']->addException(new ControllerException("Route not found for URL '$url' with method $method"));
+        if(debug()->isEnabled()) {
+            debug()->getDebugbar()['exceptions']->addException(new ControllerException("Route not found for URL '$url' with method $method"));
+        }
         $this->view('errors.404');
     }
 }

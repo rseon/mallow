@@ -254,9 +254,15 @@ abstract class Model
         }
 
         try {
-            registry('Debugbar')['time']->startMeasure('Model', $this->getMethod($method_name));
+            if(debug()->isEnabled()) {
+                debug()->getDebugbar()['time']->startMeasure('Model', $this->getMethod($method_name));
+            }
             $data = registry('Database')->$method_name(...$args);
-            registry('Debugbar')['time']->stopMeasure('Model');
+
+            if(debug()->isEnabled()) {
+                debug()->getDebugbar()['time']->stopMeasure('Model');
+            }
+
 
             // Launch hook after
             $this->launchHooksAfter($data);
@@ -265,7 +271,7 @@ abstract class Model
         }
         catch(DatabaseException $e) {
             throw new ModelException($e->getMessage());
-            //registry('Debugbar')['exceptions']->addException($e);
+            //debug()->getDebugbar()['exceptions']->addException($e);
             //return null;
         }
     }

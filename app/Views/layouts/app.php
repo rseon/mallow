@@ -2,15 +2,15 @@
 <html lang="<?php echo get_locale() ?>">
 
 <head>
-    <?php $this->partial('layouts.partials.head'); ?>
+    <?php echo $this->partial('layouts.partials.head'); ?>
     <title><?php echo get_meta('title', __('Mallow')) ?></title>
 </head>
 
 <body>
 <div class="container">
     <?php
-    $this->partial('layouts.components.lang_switcher');
-    $this->partial('layouts.components.flash');
+    echo $this->partial('layouts.components.lang_switcher');
+    echo $this->partial('layouts.components.flash');
     ?>
 
     <ul>
@@ -24,6 +24,6 @@
     <?php echo $this->content(); ?>
 </div>
 
-<?php $this->partial('layouts.partials.foot'); ?>
+<?php echo $this->partial('layouts.partials.foot'); ?>
 </body>
 </html>

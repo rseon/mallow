@@ -8,6 +8,7 @@ class View
 {
     protected $args = [];
     protected $path;
+    protected $content;
 
     /**
      * View constructor.
@@ -108,6 +109,22 @@ class View
     }
 
     /**
+     * Render the view
+     *
+     * @return false|string
+     * @throws Exceptions\AppException
+     */
+    public function __toString()
+    {
+        try {
+            return $this->render();
+        }
+        catch (ViewException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    /**
      * Include the view
      *
      * @throws Exceptions\AppException
@@ -115,21 +132,34 @@ class View
      */
     public function render()
     {
+        if($this->content) {
+            return $this->content;
+        }
+
         $file = $this->getPath($this->path);
         if(file_exists($file)) {
-            registry('Debugbar')->getCollector('views')->addView([
-                'path' => $this->path,
-                'args' => $this->args,
-            ]);
+            if(debug()->isEnabled()) {
+                debug()->getCollector('views')->addView([
+                    'path' => $this->path,
+                    'args' => $this->args,
+                ]);
+            }
+
             registry()->add('views', $this->path);
 
+            //include $file;
+            ob_start();
             include $file;
+            $this->content = ob_get_clean();
+            return $this->content;
         }
         else {
             $_message = "View file {$this->path} not found";
             $exception = new ViewException($_message);
-            registry('Debugbar')->getCollector('messages')->error($_message);
-            registry('Debugbar')->getCollector('exceptions')->addException($exception);
+            if(debug()->isEnabled()) {
+                debug()->getCollector('messages')->error($_message);
+                debug()->getCollector('exceptions')->addException($exception);
+            }
             throw $exception;
         }
     }
@@ -139,12 +169,13 @@ class View
      *
      * @param string $path
      * @param array $args
+     * @return false|string
      * @throws Exceptions\AppException
      * @throws ViewException
      */
     public function partial(string $path, array $args = [])
     {
-        (new static($path, $args))->render();
+        return new static($path, $args);
     }
 
     /**
