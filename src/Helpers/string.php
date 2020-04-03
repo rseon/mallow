@@ -120,6 +120,8 @@ if (!function_exists('sanitize')) {
 
             return $data;
         }
+
+        //$data = htmlentities($data, ENT_QUOTES | ENT_HTML5, 'UTF-8');
         return strip_tags($data);
     }
 }
