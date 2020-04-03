@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4
+### Added
+- New `debug` helper and class
+- Headers in controller response
+
+### Changed
+- The view `render` method returns the content instead of include it
+
+
 ## 1.3
 ### Added
 - Retrieve model ID with method `getId()`
