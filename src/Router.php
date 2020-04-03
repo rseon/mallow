@@ -579,7 +579,7 @@ class Router
         ];
 
         $this->setCurrentRoute($route);
-        $this->dispatch();
+        echo $this->dispatch();
     }
 
 }
