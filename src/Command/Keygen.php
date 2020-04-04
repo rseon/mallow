@@ -18,13 +18,13 @@ HELP;
         'length' => 'l',
     ];
 
-    public function handle()
+    public function handle($action = null)
     {
         $length = (int) $this->getOption('length');
         if($length < static::MIN) {
             $length = static::MIN;
         }
-
+        
         $this->print();
         $this->print('Paste this APP_KEY into your .env file :');
         $this->print();

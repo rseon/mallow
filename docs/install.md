@@ -42,6 +42,6 @@ If you have not renamed the `.env.example` file to `.env`, you should do that no
 ### Generate application key
 
 To generate the key you can run the following command : <br>
-`php src/bin/keygen`
+`php console keygen`
 
 Paste the result in `APP_KEY` of the `.env` file.

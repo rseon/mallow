@@ -27,6 +27,7 @@
 - Digging deeper
     - [Sessions](sessions.md)
     - [Helpers](helpers.md)
+    - [Console](console.md)
 
 - **Links**
 - [![Github](https://icongram.jgog.in/simple/github.svg?color=808080&size=16)Github](https://github.com/rseon/mallow)

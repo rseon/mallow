@@ -32,7 +32,13 @@ class Console
      */
     public function run()
     {
+        $action = null;
+        if(strpos($this->command, ':') !== false) {
+            list($this->command, $action) = explode(':', $this->command);
+        }
+
         $className = normalize_string_reverse($this->command, 'controller');
+        $action = normalize_string_reverse($action, 'action');
         $class = 'Rseon\\Mallow\\Command\\'.$className;
         if(!class_exists($class)) {
             $class = 'App\\Command\\'.$className;
@@ -48,7 +54,7 @@ class Console
             throw new ConsoleException("No handle method in {$class}.");
         }
 
-        $instance->handle();
+        $instance->handle($action);
         return $instance->out();
     }
 }

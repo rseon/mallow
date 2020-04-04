@@ -10,7 +10,7 @@ abstract class AbstractCommand
     protected $out = '';
     protected $command;
 
-    abstract public function handle();
+    abstract public function handle($action = null);
 
     /**
      * AbstractCommand constructor.

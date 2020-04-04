@@ -14,6 +14,7 @@
 - Registry to share data
 - Dotenv file for sensitive configuration (to not commit !)
 - CSRF protection
+- Console
 - [Debugbar](https://github.com/maximebf/php-debugbar)
 
 
@@ -24,7 +25,7 @@ So, before using this framework, make sure you have Composer installed on your m
 
 - Run `composer create-project rseon/mallow my-project`
 - Copy `.env.example` to `.env` (if `.env` file was not created)
-- Generate your `APP_KEY` running `php src/bin/keygen` and paste the result in your `.env` file 
+- Generate your `APP_KEY` running `php console keygen` and paste the result in your `.env` file 
 
 ### Front-end
 
