@@ -34,7 +34,7 @@ class Console
      */
     public function run()
     {
-        $action = null;
+        $action = '';
         if(strpos($this->command, ':') !== false) {
             list($this->command, $action) = explode(':', $this->command);
         }
