@@ -17,6 +17,8 @@ class Console
      */
     public function __construct(array $args)
     {
+        array_shift($args);
+
         if(!$args) {
             throw new ConsoleException("No command provided.");
         }

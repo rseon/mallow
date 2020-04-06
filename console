@@ -10,10 +10,6 @@ foreach (glob(ROOT.'/src/Helpers/*.php') as $file) {
     require_once $file;
 }
 registry('Config', $config);
-registry('Database', Rseon\Mallow\Database::connect(config('database')));
-
-// Launch console
-array_shift($argv);
 
 try {
     $console = new \Rseon\Mallow\Console($argv);
