@@ -4,9 +4,11 @@
 ### Added
 - New `debug` helper and class
 - Headers in controller response
+- A console for CLI scripts
 
 ### Changed
 - The view `render` method returns the content instead of include it
+- The command `php src/bin/keygen` is now `php console keygen`
 
 
 ## 1.3
