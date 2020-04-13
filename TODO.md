@@ -2,6 +2,7 @@
 
 - [ ] Unit tests
 - [ ] Doc
+- [ ] Router regex parameters
 - [ ] Forms
 - [ ] Set headers on closure
 - [ ] Securities :
@@ -10,3 +11,4 @@
     - [ ] https://paragonie.com/blog/2015/04/secure-authentication-php-with-long-term-persistence
     - [ ] https://www.acunetix.com/websitesecurity/php-security-5/
 - [ ] Observers / Listeners
+- [ ] Command "site:down" to set maintenance (and "site:up")

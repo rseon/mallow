@@ -1,10 +1,7 @@
 <?php
 
 /*
- * Define your routes here.
- * Only the index route is required (but you can change its callback).
- *
- * Fell free to add yours !
+ * Define your own routes here.
  */
 
 use Rseon\Mallow\Router;

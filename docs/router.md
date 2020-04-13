@@ -15,8 +15,12 @@
 
 ## Creating routes
 
-The routes must be defined in the [app/routes.php](https://github.com/rseon/mallow/blob/master/app/routes.php) file.
+The [src/default_router.php](https://github.com/rseon/mallow/blob/master/src/default_router.php) file contains the
+default router.
+It contains base routes.
+You must override it in your own [app/routes.php](https://github.com/rseon/mallow/blob/master/app/routes.php) file.
 You are free to organize it as you want.
+
 
 All the routes defined will be processed in the `public` directory by the
 [index.php](https://github.com/rseon/mallow/blob/master/public/index.php) (according to the

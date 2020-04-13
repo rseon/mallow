@@ -8,8 +8,34 @@
 
 ## Introduction 
 
-The main app configuration is located in the [app/config.php](https://github.com/rseon/mallow/blob/master/app/config.php) file.
-This file is documented so feel free to look through the file and get familiar with the options available to you.
+The [src/default_config.php](https://github.com/rseon/mallow/blob/master/src/default_config.php) file contains the base
+configuration. You can override it using your own [app/config.php](https://github.com/rseon/mallow/blob/master/app/config.php) file.
+
+These files are documented so feel free to look through the files and get familiar with the options available to you.
+
+?> **Tip** : Because app config and base config are merged, you can override all or only part you want.
+
+```php
+// in src/default_config.php
+'foo' => 'bar',
+'baz' => [
+    'qux' => 'quux',
+    'corge' => 'grault',
+],
+
+// in app/config.php
+'foo' => 'garply',
+'baz' => [
+    'qux' => 'waldo',
+],
+
+// Result will be
+'foo' => 'garply',
+'baz' => [
+    'qux' => 'waldo',
+    'corge' => 'grault',
+],
+```
 
 
 ## Environment configuration

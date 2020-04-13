@@ -57,6 +57,54 @@ if (!function_exists('get_path')) {
     }
 }
 
+if (!function_exists('load_config')) {
+
+    /**
+     * Load configuration files
+     *
+     * @return array
+     */
+    function load_config()
+    {
+        $configSrc = require_once get_path('/src/default_config.php');
+        $userConfig = get_path('/app/config.php');
+        $configApp = [];
+        if(file_exists($userConfig)) {
+            $configApp = require_once $userConfig;
+        }
+        return merge_arrays($configSrc, $configApp);
+    }
+}
+
+if (!function_exists('merge_arrays')) {
+
+    /**
+     * Merge arrays
+     *
+     * @param mixed ...$arrays
+     * @return array
+     * @since 1.5
+     */
+    function merge_arrays(...$arrays)
+    {
+        $merged = [];
+        foreach($arrays as $array) {
+            foreach($array as $k => $v) {
+                if(!array_key_exists($k, $merged)) {
+                    $merged[$k] = $v;
+                }
+                if(is_array($v)) {
+                    $merged[$k] = merge_arrays($merged[$k], $v);
+                }
+                else {
+                    $merged[$k] = $v;
+                }
+            }
+        }
+        return $merged;
+    }
+}
+
 if (!function_exists('registry')) {
     /**
      * Registry.

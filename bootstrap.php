@@ -28,14 +28,14 @@ if(!getenv('APP_KEY')) {
 ini_set('session.cookie_domain', '.'.getenv('APP_DOMAIN'));
 session_start();
 
-// Configuration
-$config = require_once ROOT.'/app/config.php';
-
 // Helpers
 require_once ROOT.'/src/helpers.php';
 foreach (glob(ROOT.'/src/Helpers/*.php') as $file) {
     require_once $file;
 }
+
+// Configuration
+registry('Config', load_config());
 
 /*
  * Your own helpers
@@ -45,13 +45,11 @@ if(file_exists($helpers)) {
     require_once $helpers;
 }
 
-// Save config
-registry('Config', $config);
-
 // Set current locale
 set_locale();
 
 // Add routes
+require_once ROOT.'/src/default_routes.php';
 require_once ROOT.'/app/routes.php';
 registry('Router', \Rseon\Mallow\Router::getInstance());
 

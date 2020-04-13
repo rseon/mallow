@@ -147,7 +147,6 @@ class View
 
             registry()->add('views', $this->path);
 
-            //include $file;
             ob_start();
             include $file;
             $this->content = ob_get_clean();
@@ -160,7 +159,8 @@ class View
                 debug()->getCollector('messages')->error($_message);
                 debug()->getCollector('exceptions')->addException($exception);
             }
-            throw $exception;
+            //throw $exception;
+            return $exception->getMessage();
         }
     }
 

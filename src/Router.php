@@ -284,6 +284,22 @@ class Router
 
                 break;
             }
+
+            // Named regex
+            // doesn't works with /test/:param1/:param2
+            /*if(strpos($route['path'], ':') !== false) {
+                preg_match('#:([\w]+)#', $route['path'], $params);
+                dump($params);
+                if($params) {
+                    $path = preg_replace('#:([\w]+)#', '([^/]+)', $route['path']);
+                    $regex = "#^$path$#i";
+                    $res = preg_match($regex, $url, $matches);
+                    if($matches){
+                        dd($params, $matches, $route);
+                        //return false;
+                    }
+                }
+            }*/
         }
 
         if(!$current) {
@@ -497,18 +513,58 @@ class Router
         }
 
         $action = null;
-        $controller = "{$namespace}\\{$current['callback']}";
-        if(strpos($controller, '@') !== false) {
-            list($controller, $action) = explode('@', $controller);
+        $controllerName = $current['callback'];
+        if(strpos($controllerName, '@') !== false) {
+            list($controllerName, $action) = explode('@', $controllerName);
+        }
+        $controller = "{$namespace}\\{$controllerName}";
+
+        if(!class_exists($controller)) {
+            return $this->dispatchErrorController('controllerNotFound', ['controller' => $controllerName]);
         }
 
-        $controller = new $controller($action, $current['request']);
+        return $this->runDispatcher($controller, $action, $current['request'] ?? []);
+    }
+
+    /**
+     * Run the ErrorController
+     *
+     * @param $action
+     * @param array $request
+     * @return mixed
+     * @throws Exceptions\AppException
+     */
+    public function dispatchErrorController($action, $request = [])
+    {
+        $controller = config('controllers').'\\ErrorController';
+        if(!class_exists($controller)) {
+            $controller = 'Rseon\\Mallow\\Controllers\\ErrorController';
+        }
+        $request = ['request' => $request];
+
+        return $this->runDispatcher($controller, $action, $request);
+    }
+
+    /**
+     * Run the dispatcher
+     *
+     * @param $controllerName
+     * @param $action
+     * @param array $request
+     * @return mixed
+     * @throws Exceptions\AppException
+     */
+    public function runDispatcher($controllerName, $action, $request = [])
+    {
+        $controller = new $controllerName($action, $request);
         if($action) {
-            //$controller->$action();
-            call_user_func_array([$controller, $action], $current['request']);
+            if(!method_exists($controller, $action)) {
+                return $this->dispatchErrorController('actionNotFound', ['controller' => $controllerName, 'action' => $action]);
+            }
+            call_user_func_array([$controller, $action], $request);
         }
         else {
-            call_user_func_array($controller, $current['request']);
+            call_user_func_array($controller, $request);
         }
         return $controller->run();
     }

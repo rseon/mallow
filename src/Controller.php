@@ -57,7 +57,9 @@ abstract class Controller
      */
     public function run()
     {
-        $this->displayHeaders();
+        if(!headers_sent()) {
+            $this->displayHeaders();
+        }
 
         if($this->view === false) {
             return;
