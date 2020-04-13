@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.5
+### Added
+- Default config and router
+- Helpers `merge_config` and `load_config`
+- ErrorController actions `controllerNotFound` and `actionNotFound`
+
+### Fixed
+- Check if headers are already sent
+- Check controller / action exists before call them
+- Show ViewException message instead of throw it
+
+
 ## 1.4
 ### Added
 - New `debug` helper and class
